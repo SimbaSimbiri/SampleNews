@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
-class ArticlesViewModel : BaseViewModel() {
+class ArticlesViewModel(
+    private val useCase: ArticleUseCase
+) : BaseViewModel() {
     // this single stream of stateflow will expose every bit of info that our UI needs and we can
     // keep the UI as dumb as possible
 
@@ -19,26 +21,11 @@ class ArticlesViewModel : BaseViewModel() {
 
     // our public stream should be immutable so that no external intrusion can change the state
     val articleState: StateFlow<ArticleState> get() =_articleState
-    private val useCase: ArticleUseCase
 
     init {
-        val httpClient = HttpClient{
-            install(ContentNegotiation){
-                json(Json{
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                })
-            }
-        }
-
-        val service = ArticlesService(httpClient)
-        useCase = ArticleUseCase(service)
-
         // instead of having our UI call this logic function, we just call it here so that when
         // the UI creates our viewModel, it will immediately subscribe to the articleStateFlow
         getArticles()
-
     }
 
     private fun getArticles(){

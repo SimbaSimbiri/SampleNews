@@ -41,10 +41,11 @@ import coil.compose.AsyncImage
 import com.example.samplenews.articles.Article
 import com.example.samplenews.articles.ArticleState
 import com.example.samplenews.articles.ArticlesViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ArticlesScreen(
-    onAboutButtonClick: () -> Unit, articlesViewModel: ArticlesViewModel
+    onAboutButtonClick: () -> Unit, articlesViewModel: ArticlesViewModel = getViewModel()
 ) {
     // we want to collect/subscribe to the stream of info from the viewModel as an observable object
 

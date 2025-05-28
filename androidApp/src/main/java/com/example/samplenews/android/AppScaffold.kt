@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AppScaffold(articlesViewModel: ArticlesViewModel) {
+fun AppScaffold() {
     val navController = rememberNavController()
     val paddingValues = PaddingValues(top = 0.dp, start = 0.dp, end = 0.dp, bottom = 16.dp)
 
@@ -31,7 +31,6 @@ fun AppScaffold(articlesViewModel: ArticlesViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            articlesViewModel = articlesViewModel
         )
     }
 }
@@ -40,7 +39,6 @@ fun AppScaffold(articlesViewModel: ArticlesViewModel) {
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    articlesViewModel: ArticlesViewModel
 ) {
     NavHost(
         navController = navController,
@@ -49,8 +47,7 @@ fun AppNavHost(
     ) {
         composable(Screens.ARTICLES.route) { // if the current route is articles, navigate to ArticlesScreen
             ArticlesScreen(
-                onAboutButtonClick = { navController.navigate(Screens.ABOUT_DEVICE.route) },
-                articlesViewModel,
+                onAboutButtonClick = { navController.navigate(Screens.ABOUT_DEVICE.route) }
             )
         }
 
