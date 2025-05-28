@@ -5,6 +5,7 @@ build/
 captures/
 .externalNativeBuild/
 .cxx/
+.kotlin/
 
 # === Local Configuration ===
 local.properties

@@ -8,8 +8,8 @@ import io.ktor.client.request.get
 class ArticlesService (private val httpClient: HttpClient){
     /*
     private val company = "tesla"
-    private val sortBy ="publishedAt"*/
-    private val queryKeyWord = "stock"
+    private val sortBy ="publishedAt"
+    private val queryKeyWord = "stock"*/
     private val country = "us"
     private val category = "business"
     private val apiKey = Secrets.NEWS_API_KEY
