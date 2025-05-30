@@ -15,10 +15,4 @@ actual class Platform(){
         get() = UIDevice.currentDevice.model
     actual val density: Int
         get() = UIScreen.mainScreen.scale.toInt()
-
-    actual fun logSystemInfo() {
-        NSLog(
-            "(OS Name: $osName, OS Version: $osVersion, Device Model: $deviceModel, Density: $density)"
-        )
-    }
 }

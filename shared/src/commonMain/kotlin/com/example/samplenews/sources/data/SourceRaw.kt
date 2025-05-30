@@ -5,18 +5,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SourceRaw (
-@SerialName("name")
-val name: String,
+    @SerialName("name")
+    val name: String,
 
-@SerialName("description")
-val description: String,
+    @SerialName("description")
+    val description: String,
 
-@SerialName("url")
-val homepage: String,
+    @SerialName("url")
+    val homepage: String,
 
-@SerialName("country")
-val country: String,
+    @SerialName("country")
+    val country: String,
 
-@SerialName("language")
-val language: String
+    @SerialName("language")
+    val language: String
 )

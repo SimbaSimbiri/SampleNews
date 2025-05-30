@@ -14,14 +14,4 @@ actual class Platform(){
         get() = "${Build.MANUFACTURER} - ${Build.MODEL}"
     actual val density: Int
         get() = round(Resources.getSystem().displayMetrics.density).toInt()
-
-
-    actual fun logSystemInfo() {
-        Log.d(
-            "Sample News",
-            "(OS Name: $osName, OS Version: $osVersion, Device Model: $deviceModel, Density: $density)"
-        )
-    }
-
-
 }

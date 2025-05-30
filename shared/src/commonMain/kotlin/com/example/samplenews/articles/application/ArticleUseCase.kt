@@ -6,19 +6,24 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.random.Random
 
 class ArticleUseCase(private val articlesService: ArticlesService) {
     suspend fun getArticles() : List<Article>{
-        val articlesRaw = articlesService.fetchArticles()
+        val articleListRaw =
+            articlesService.fetchArticles("technology") + articlesService.fetchArticles("business")
 
-        return mappedArticles(articlesRaw)
+        return mappedArticles(articleListRaw).stableShuffle(42L)
     }
 
-    private fun mappedArticles(articlesRaw: List<ArticleRaw>): List<Article> =
-        articlesRaw.map { articleRaw ->
+    private fun <T> List<T>.stableShuffle(seed: Long): List<T> = this.shuffled(Random(seed))
+
+
+    private fun mappedArticles(articleListRaw: List<ArticleRaw>): List<Article> =
+        articleListRaw.map { articleRaw ->
             Article(
                 title = articleRaw.title.split(" - ")[0],
-                description = articleRaw.description ?: "Click to find out more",
+                description = articleRaw.description ?: "Click to read news content",
                 date = presentDate(articleRaw.date),
                 imageUrl = articleRaw.imageUrl ?: "https://image.cnbcfm.com/api/v1/image/107326078-1698758530118-gettyimages-1765623456-wall26362_igj6ehhp.jpeg?v=1698758587&w=1920&h=1080",
                 publisher = articleRaw.source.name
@@ -48,10 +53,10 @@ class ArticleUseCase(private val articlesService: ArticlesService) {
                 "$day $month"
             }
             else -> {
-                // Previous year, show "23 May 2024"
+                // Previous year, show "23 May, 2024"
                 val day = parsedLocal.date.dayOfMonth
                 val month = parsedLocal.date.month.name.lowercase().replaceFirstChar { it.uppercase() }
-                "$day $month ${parsedLocal.date.year}"
+                "$day $month, ${parsedLocal.date.year}"
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.example.samplenews.android.screens
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,7 +52,7 @@ fun SourcesScreen(
         when (sourceState.value) {
             is SourceState.Loading -> Loader()
             is SourceState.Success -> SourceListView((sourceState.value as SourceState.Success).sources)
-            is SourceState.Error -> ErrorMessage((sourceState.value as SourceState.Error).message)
+            is SourceState.Empty -> ErrorMessage("No sources found at the moment")
             else -> ErrorMessage("No sources found")
         }
     }

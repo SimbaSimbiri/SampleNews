@@ -8,7 +8,7 @@ import kotlinx.coroutines.cancel
 actual open class BaseViewModel {
 
     // we have to manually create our scope here, which will from Dispatchers.IO which will restrict
-    // our db and http queries to not be carried out on the main thread
+    // our db and http queries from being carried out on the main thread
     actual val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     fun clear(){

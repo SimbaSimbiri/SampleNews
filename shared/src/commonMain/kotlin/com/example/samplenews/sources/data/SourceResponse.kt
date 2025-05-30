@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 data class SourceResponse(
     @SerialName("status")
     val status: String,
+
     @SerialName("sources")
     val sourceList: List<SourceRaw>
 )

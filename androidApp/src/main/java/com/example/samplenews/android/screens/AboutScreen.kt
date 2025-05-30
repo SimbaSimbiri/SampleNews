@@ -67,7 +67,6 @@ fun RowView(title: String, subtitle: String) {
 
 fun makeItems(): List<Pair<String, String>> {
     val platform = Platform()
-    //platform.logSystemInfo()
 
     return listOf(
         Pair("Operating System", "${platform.osName} ${platform.osVersion}"),

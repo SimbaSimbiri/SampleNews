@@ -47,12 +47,12 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun ArticlesScreen(
     onAboutButtonClick: () -> Unit,
-    articlesViewModel: ArticlesViewModel = getViewModel(),
+    articlesViewModel: ArticlesViewModel = getViewModel<ArticlesViewModel>(),
     onSourcesButtonClick: () -> Unit
 ) {
     // we want to collect/subscribe to the stream of info from the viewModel as an observable object
 
-    val articleState = articlesViewModel.articleState.collectAsState()
+    val articleState = articlesViewModel.articleStateFlow.collectAsState()
 
     Column {
         AppBar(onAboutButtonClick,onSourcesButtonClick, "Isaac's Articles")
@@ -137,48 +137,6 @@ fun ArticleItemView(article: Article) {
         }
     }
 }
-
-/*
-fun ArticleItemView(article: Article) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        AsyncImage(
-            model = article.imageUrl,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = article.title,
-            style = TextStyle(fontSize = 22.sp),
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = article.description,
-            style = TextStyle(fontSize = 16.sp)
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = article.date,
-            style = TextStyle(color = Color.Gray),
-            modifier = Modifier.align(Alignment.End)
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-
-    }
-}
-*/
 
 @Composable
 fun ErrorMessage(error: String) {

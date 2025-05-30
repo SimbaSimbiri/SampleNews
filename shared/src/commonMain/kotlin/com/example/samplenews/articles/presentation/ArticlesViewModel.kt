@@ -9,31 +9,32 @@ import kotlinx.coroutines.launch
 class ArticlesViewModel(
     private val useCase: ArticleUseCase
 ) : BaseViewModel() {
+
     // this single stream of stateflow will expose every bit of info that our UI needs and we can
     // keep the UI as dumb as possible
-
-    private val _articleState: MutableStateFlow<ArticleState> =
+    private val _articleStateFlow: MutableStateFlow<ArticleState> =
         MutableStateFlow(ArticleState.Loading)
 
     // our public stream should be immutable so that no external intrusion can change the state
-    val articleState: StateFlow<ArticleState> get() =_articleState
+    val articleStateFlow: StateFlow<ArticleState> get() =_articleStateFlow
 
     init {
         // instead of having our UI call this logic function, we just call it here so that when
-        // the UI creates our viewModel, it will immediately subscribe to the articleStateFlow
+        // the UI instantiates our viewModel via Koin DI, it will immediately subscribe to the
+        // articleStateFlow
         getArticles()
     }
 
     private fun getArticles(){
         scope.launch {
-            val fetched = useCase.getArticles() // we now call the backend to fetch the articles
+            // we now call the backend to fetch the articles
+            val fetched = useCase.getArticles()
 
-            if (fetched.isEmpty()){
-                _articleState.emit(ArticleState.Empty)
-            } else{
-                _articleState.emit(ArticleState.Success(articles = fetched))
-                // this state will be transmitted back to the UI
-            }
+            // this state will be transmitted back to the UI
+            if (fetched.isNotEmpty())
+                _articleStateFlow.emit(ArticleState.Success(articles = fetched))
+            else
+                _articleStateFlow.emit(ArticleState.Empty)
         }
     }
 

@@ -11,11 +11,8 @@ interface Platform { // this is similar to a Protocol for Swift
 // but the actual implementation is restricted to only be in the androidMain and iosMain
 
 expect class Platform{
-
     val osName: String
     val osVersion: String
     val deviceModel: String
     val density: Int
-
-    fun logSystemInfo()
 }
