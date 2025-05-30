@@ -1,9 +1,9 @@
-package com.example.samplenews.articles
+package com.example.samplenews.articles.data
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Source(
+data class SourceArt(
     val id: String? = null,
     val name: String
 )

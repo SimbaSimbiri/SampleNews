@@ -27,7 +27,7 @@ fun AboutScreen(
 ){
 
     Column{ // this is a precalculated list of a few items arranged vertically
-        Toolbar( onBackButtonClick) // this is a self constructed composable, don't use the default ToolBar widget
+        Toolbar( onBackButtonClick,"About Device") // this is a self constructed composable, don't use the default ToolBar widget
         ContentView()
     }
 }
@@ -80,11 +80,11 @@ fun makeItems(): List<Pair<String, String>> {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Toolbar(
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit, title: String
 
 ){
     TopAppBar(
-        title = { Text("About Device") },
+        title = { Text(title) },
         navigationIcon = {
             IconButton(onClick = onBackButtonClick) {
                 Icon(

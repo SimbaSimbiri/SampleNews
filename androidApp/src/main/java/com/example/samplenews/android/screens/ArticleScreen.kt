@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -38,21 +39,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalConfiguration
 import coil.compose.AsyncImage
-import com.example.samplenews.articles.Article
-import com.example.samplenews.articles.ArticleState
-import com.example.samplenews.articles.ArticlesViewModel
+import com.example.samplenews.articles.application.Article
+import com.example.samplenews.articles.presentation.ArticleState
+import com.example.samplenews.articles.presentation.ArticlesViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ArticlesScreen(
-    onAboutButtonClick: () -> Unit, articlesViewModel: ArticlesViewModel = getViewModel()
+    onAboutButtonClick: () -> Unit,
+    articlesViewModel: ArticlesViewModel = getViewModel(),
+    onSourcesButtonClick: () -> Unit
 ) {
     // we want to collect/subscribe to the stream of info from the viewModel as an observable object
 
     val articleState = articlesViewModel.articleState.collectAsState()
 
     Column {
-        AppBar(onAboutButtonClick)
+        AppBar(onAboutButtonClick,onSourcesButtonClick, "Isaac's Articles")
         when (articleState.value) {
             is ArticleState.Loading -> Loader()
             is ArticleState.Success -> ArticlesListView((articleState.value as ArticleState.Success).articles)
@@ -210,10 +213,17 @@ fun Loader() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(onAboutButtonClick: () -> Unit) {
+fun AppBar(onAboutButtonClick: () -> Unit, onSourcesButtonClick: () -> Unit, title: String) {
     TopAppBar(
-        title = { Text(text = "Isaac's Articles" /*textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()*/) },
+        title = { Text(text = title /*textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()*/) },
         actions = {
+
+            IconButton(onClick = onSourcesButtonClick) {
+                Icon(
+                    imageVector = Icons.Outlined.List,
+                    contentDescription = "Source Page",
+                )
+            }
 
             IconButton(onClick = onAboutButtonClick) {
                 Icon(

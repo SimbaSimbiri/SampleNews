@@ -1,5 +1,7 @@
-package com.example.samplenews.articles
+package com.example.samplenews.articles.application
 
+import com.example.samplenews.articles.data.ArticleRaw
+import com.example.samplenews.articles.data.ArticlesService
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone

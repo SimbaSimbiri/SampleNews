@@ -1,4 +1,6 @@
-package com.example.samplenews.articles
+package com.example.samplenews.articles.presentation
+
+import com.example.samplenews.articles.application.Article
 
 //We would have represented our state with Sealed classes but KMP doesn't support them yet
 /*data class ArticleState (

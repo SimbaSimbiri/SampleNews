@@ -1,8 +1,8 @@
 package com.example.samplenews.articles.di
 
-import com.example.samplenews.articles.ArticleUseCase
-import com.example.samplenews.articles.ArticlesService
-import com.example.samplenews.articles.ArticlesViewModel
+import com.example.samplenews.articles.application.ArticleUseCase
+import com.example.samplenews.articles.data.ArticlesService
+import com.example.samplenews.articles.presentation.ArticlesViewModel
 import org.koin.dsl.module
 
 val articlesModule = module {

@@ -1,5 +1,5 @@
 package com.example.samplenews.di
-import com.example.samplenews.articles.ArticlesViewModel
+import com.example.samplenews.articles.presentation.ArticlesViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.context.startKoin

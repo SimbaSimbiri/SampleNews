@@ -1,4 +1,4 @@
-package com.example.samplenews.articles
+package com.example.samplenews.articles.data
 
 import com.example.samplenews.Secrets
 import io.ktor.client.HttpClient

@@ -1,4 +1,4 @@
-package com.example.samplenews.articles
+package com.example.samplenews.articles.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -19,5 +19,5 @@ data class ArticleRaw (
     val date: String,
 
     @SerialName("source")
-    val source: Source
+    val source: SourceArt
 )
