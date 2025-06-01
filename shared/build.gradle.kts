@@ -8,6 +8,9 @@ plugins {
     // we add the skie plugin so as to allow the iosApp to consume the Kotlin StateFlow object being
     // emitted to the UI
     alias(libs.plugins.skie)
+    // we are trying to add the 2.0.1 SQLDelight plugin
+    alias(libs.plugins.sqldelight)
+
 }
 
 kotlin {
@@ -46,6 +49,9 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             // dependency injection framework used for dependency injection
             implementation(libs.koin.core)
+            // coroutine functionality for sqldelight
+            implementation(libs.sqldelight.coroutines)
+
 
 
         }
@@ -53,15 +59,25 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.lifecycle.viewmodel.ktx)
             implementation(libs.ktor.client.android)
+            implementation(libs.sqldelight.android)
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.sqldelight.native)
 
         }
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("SampleNewsDatabase") {
+            packageName.set("com.example.samplenews.db")
         }
     }
 }

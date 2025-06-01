@@ -1,0 +1,17 @@
+CREATE TABLE Source (
+    name TEXT NOT NULL,
+    description TEXT,
+    homepage TEXT NOT NULL,
+    country TEXT NOT NULL,
+    language TEXT NOT NULL
+    );
+
+insertSource:
+INSERT INTO Source(name, description, homepage, country, language)
+VALUES (?, ?, ?, ?,?);
+
+selectAllSources:
+SELECT * FROM Source;
+
+removeAllSources:
+DELETE FROM Source;

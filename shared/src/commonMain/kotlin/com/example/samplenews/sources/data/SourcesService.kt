@@ -5,7 +5,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-class SourceService(private val httpClient: HttpClient) {
+class SourcesService(private val httpClient: HttpClient) {
 
     private val language = "en"
     private val apiKey = Secrets.NEWS_API_KEY
@@ -13,7 +13,7 @@ class SourceService(private val httpClient: HttpClient) {
 
 
     suspend fun fetchSources(category: String): List<SourceRaw>{
-        val response: SourceResponse =
+        val response: SourcesResponse =
             httpClient.get("${sourceEndpoint}&language=${language}&category=${category}&apiKey=$apiKey").body()
 
         return if (response.status == "ok") response.sourceList

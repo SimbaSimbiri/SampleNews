@@ -2,6 +2,7 @@ package com.example.samplenews.articles.presentation
 
 import com.example.samplenews.BaseViewModel
 import com.example.samplenews.articles.application.ArticleUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -13,10 +14,10 @@ class ArticlesViewModel(
     // this single stream of stateflow will expose every bit of info that our UI needs and we can
     // keep the UI as dumb as possible
     private val _articleStateFlow: MutableStateFlow<ArticleState> =
-        MutableStateFlow(ArticleState.Loading)
+        MutableStateFlow(ArticleState.LoadingInitial)
 
     // our public stream should be immutable so that no external intrusion can change the state
-    val articleStateFlow: StateFlow<ArticleState> get() =_articleStateFlow
+    val articleStateFlow: StateFlow<ArticleState> get() = _articleStateFlow
 
     init {
         // instead of having our UI call this logic function, we just call it here so that when
@@ -25,18 +26,30 @@ class ArticlesViewModel(
         getArticles()
     }
 
-    private fun getArticles(){
+    fun getArticles(forceFetch: Boolean = false) {
         scope.launch {
-            // we now call the backend to fetch the articles
-            val fetched = useCase.getArticles()
+            val currentState = _articleStateFlow.value
 
-            // this state will be transmitted back to the UI
-            if (fetched.isNotEmpty())
-                _articleStateFlow.emit(ArticleState.Success(articles = fetched))
-            else
-                _articleStateFlow.emit(ArticleState.Empty)
+            if (currentState is ArticleState.Success && forceFetch) {
+                _articleStateFlow.emit(ArticleState.Refreshing(currentState.articles))
+                delay(1000)
+            } else if (currentState !is ArticleState.Success) {
+                _articleStateFlow.emit(ArticleState.LoadingInitial)
+                delay(1000)
+            }
+
+            try {
+                val fetched = useCase.getArticles(forceFetch)
+
+                if (fetched.isNotEmpty()) {
+                    _articleStateFlow.emit(ArticleState.Success(fetched))
+                } else {
+                    _articleStateFlow.emit(ArticleState.Empty)
+                }
+            } catch (e: Exception) {
+                _articleStateFlow.emit(ArticleState.Error(e.message ?: "Something went wrong"))
+            }
         }
     }
-
 
 }

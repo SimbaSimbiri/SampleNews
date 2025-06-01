@@ -1,6 +1,7 @@
 package com.example.samplenews.articles.application
 
 import com.example.samplenews.articles.data.ArticleRaw
+import com.example.samplenews.articles.data.ArticlesRepository
 import com.example.samplenews.articles.data.ArticlesService
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -8,10 +9,10 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.random.Random
 
-class ArticleUseCase(private val articlesService: ArticlesService) {
-    suspend fun getArticles() : List<Article>{
+class ArticleUseCase(private val repository: ArticlesRepository) {
+    suspend fun getArticles(forceFetch: Boolean) : List<Article>{
         val articleListRaw =
-            articlesService.fetchArticles("technology") + articlesService.fetchArticles("business")
+            repository.getArticles(forceFetch)
 
         return mappedArticles(articleListRaw).stableShuffle(42L)
     }
@@ -24,6 +25,7 @@ class ArticleUseCase(private val articlesService: ArticlesService) {
             Article(
                 title = articleRaw.title.split(" - ")[0],
                 description = articleRaw.description ?: "Click to read news content",
+                content = articleRaw.content ?:"news content",
                 date = presentDate(articleRaw.date),
                 imageUrl = articleRaw.imageUrl ?: "https://image.cnbcfm.com/api/v1/image/107326078-1698758530118-gettyimages-1765623456-wall26362_igj6ehhp.jpeg?v=1698758587&w=1920&h=1080",
                 publisher = articleRaw.source.name

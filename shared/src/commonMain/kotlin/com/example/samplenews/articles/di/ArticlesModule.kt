@@ -1,6 +1,8 @@
 package com.example.samplenews.articles.di
 
 import com.example.samplenews.articles.application.ArticleUseCase
+import com.example.samplenews.articles.data.ArticlesDataSource
+import com.example.samplenews.articles.data.ArticlesRepository
 import com.example.samplenews.articles.data.ArticlesService
 import com.example.samplenews.articles.presentation.ArticlesViewModel
 import org.koin.dsl.module
@@ -13,4 +15,6 @@ val articlesModule = module {
     single<ArticlesService>{ ArticlesService(get()) }
     single<ArticleUseCase>{ ArticleUseCase(get()) }
     single<ArticlesViewModel>{ ArticlesViewModel(get()) }
+    single<ArticlesDataSource>{ ArticlesDataSource(get()) }
+    single<ArticlesRepository>{ ArticlesRepository(get(), get()) }
 }

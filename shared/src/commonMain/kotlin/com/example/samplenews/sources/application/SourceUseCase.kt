@@ -1,13 +1,13 @@
 package com.example.samplenews.sources.application
 
 import com.example.samplenews.sources.data.SourceRaw
-import com.example.samplenews.sources.data.SourceService
+import com.example.samplenews.sources.data.SourcesRepository
+import com.example.samplenews.sources.data.SourcesService
 import kotlin.random.Random
 
-class SourceUseCase(private val sourceService: SourceService) {
-    suspend fun getSources(): List<Source> {
-        val sourceListRaw : List<SourceRaw> =  sourceService.fetchSources("technology") +
-                sourceService.fetchSources("business")
+class SourceUseCase(private val repository: SourcesRepository) {
+    suspend fun getSources(forceFetch: Boolean): List<Source> {
+        val sourceListRaw : List<SourceRaw> = repository.getSources(forceFetch)
 
         return mappedRawDomain(sourceListRaw).stableShuffle(42L)
     }

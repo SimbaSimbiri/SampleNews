@@ -1,5 +1,7 @@
 package com.example.samplenews.android.screens
 
+import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,10 +41,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
 import com.example.samplenews.articles.application.Article
 import com.example.samplenews.articles.presentation.ArticleState
 import com.example.samplenews.articles.presentation.ArticlesViewModel
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.shimmer
+import com.google.accompanist.placeholder.placeholder
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -51,35 +60,51 @@ fun ArticlesScreen(
     onSourcesButtonClick: () -> Unit
 ) {
     // we want to collect/subscribe to the stream of info from the viewModel as an observable object
-
-    val articleState = articlesViewModel.articleStateFlow.collectAsState()
+    val articleState by articlesViewModel.articleStateFlow.collectAsState()
 
     Column {
-        AppBar(onAboutButtonClick,onSourcesButtonClick, "Isaac's Articles")
-        when (articleState.value) {
-            is ArticleState.Loading -> Loader()
-            is ArticleState.Success -> ArticlesListView((articleState.value as ArticleState.Success).articles)
-            is ArticleState.Error -> ErrorMessage((articleState.value as ArticleState.Error).message)
-            is ArticleState.Empty -> ErrorMessage("No articles found today")
+        AppBar(onAboutButtonClick, onSourcesButtonClick, "Isaac's Articles")
+        when (articleState) {
+            is ArticleState.LoadingInitial -> ShimmerList() // show shimmer UI
+            is ArticleState.Success -> ArticlesListView(
+                (articleState as ArticleState.Success).articles,
+                false
+            ) { articlesViewModel.getArticles(forceFetch = true) }
+
+            is ArticleState.Refreshing -> ArticlesListView(
+                (articleState as ArticleState.Refreshing).articles,
+                true
+            ) { articlesViewModel.getArticles(forceFetch = true) }
+
+            is ArticleState.Error -> ErrorMessage((articleState as ArticleState.Error).message)
+            is ArticleState.Empty -> ErrorMessage("No articles found")
         }
+
     }
 
 }
 
 @Composable
-fun ArticlesListView(articles: List<Article>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(articles) { article ->
-            ArticleItemView(article = article)
+fun ArticlesListView(
+    articles: List<Article>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
+) {
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = onRefresh
+    ) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(articles) { article ->
+                ArticleItemView(article)
+            }
         }
     }
 }
 
 @Composable
 fun ArticleItemView(article: Article) {
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    val imageHeight = screenHeight * 0.30f
+    val imageHeight = imageHeight()
 
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -92,6 +117,9 @@ fun ArticleItemView(article: Article) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
+                .clickable {
+                    Log.d("${article.title}", "${article.content}")
+                }
         ) {
             AsyncImage(
                 model = article.imageUrl,
@@ -139,6 +167,48 @@ fun ArticleItemView(article: Article) {
 }
 
 @Composable
+private fun imageHeight(): Dp {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val imageHeight = screenHeight * 0.30f
+    return imageHeight
+}
+
+@Composable
+fun ShimmerList() {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(5) {
+            ShimmerItemView()
+        }
+    }
+}
+
+@Composable
+fun ShimmerItemView() {
+    val cardHeight = imageHeight() + 100.dp
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .height(cardHeight),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+
+        ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .placeholder(
+                    visible = true, highlight = PlaceholderHighlight.shimmer(),
+                    color = MaterialTheme.colorScheme.surfaceVariant
+                )
+
+        )
+    }
+}
+
+
+@Composable
 fun ErrorMessage(error: String) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -173,7 +243,7 @@ fun Loader() {
 @Composable
 fun AppBar(onAboutButtonClick: () -> Unit, onSourcesButtonClick: () -> Unit, title: String) {
     TopAppBar(
-        title = { Text(text = title /*textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()*/) },
+        title = { Text(text = title) },
         actions = {
 
             IconButton(onClick = onSourcesButtonClick) {

@@ -1,6 +1,7 @@
 package com.example.samplenews.android
 
 import android.app.Application
+import com.example.samplenews.android.di.databaseModule
 import com.example.samplenews.android.di.viewModelsModule
 import com.example.samplenews.di.sharedKoinModules
 import org.koin.android.ext.koin.androidContext
@@ -17,7 +18,8 @@ class SampleNewsApplication : Application(){
     }
 
     private fun initializeKoin() {
-        val allModules = sharedKoinModules + viewModelsModule // we need to tell the android app that
+        val allModules = sharedKoinModules + viewModelsModule + databaseModule
+        // we need to tell the android app that
         // our viewModels will not be purely provided by the android system but extended by koin that
         // provides dependency injections for their respective useCases
 

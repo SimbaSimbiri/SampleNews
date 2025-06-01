@@ -1,5 +1,7 @@
 [versions]
-agp = "8.9.1"
+accompanist = "0.34.0"
+accompanistPlaceholderMaterial = "0.32.0"
+agp = "8.9.2"
 coilCompose = "2.5.0"
 koinAndroid = "3.5.3"
 kotlin = "2.0.0"
@@ -13,6 +15,8 @@ navigationCompose = "2.9.0"
 ktorClient = "2.3.5"
 kotlinx-serialization = "1.6.0"
 skie = "0.4.19"
+sqldelight = "2.1.0"
+
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -28,6 +32,9 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 ## Miscellaneous
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+accompanist-swipe-refresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
+accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanistPlaceholderMaterial" }
+
 
 ### Presentation dependecies
 ## ViewModels
@@ -44,6 +51,11 @@ ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "k
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorClient" }
 ## Coroutines
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+## Sql delight
+sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+
 
 ### Technical and Architectural dependecies
 ## Koin for dependecy injection
@@ -62,3 +74,5 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 skie = { id = "co.touchlab.skie", version.ref = "skie" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+
