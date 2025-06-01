@@ -185,7 +185,7 @@ fun ShimmerList() {
 
 @Composable
 fun ShimmerItemView() {
-    val cardHeight = imageHeight() + 100.dp
+    val cardHeight = 200.dp
     Card(
         modifier = Modifier
             .fillMaxWidth()

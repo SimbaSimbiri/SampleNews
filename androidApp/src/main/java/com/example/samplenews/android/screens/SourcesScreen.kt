@@ -76,7 +76,7 @@ fun SourcesScreen(
                 }
             }
 
-            is SourceState.Error -> ErrorMessage("No sources found")
+            is SourceState.Error -> ErrorMessage((sourceState as SourceState.Error).message)
             SourceState.Empty -> ErrorMessage("No sources found at the moment")
         }
     }
@@ -122,7 +122,7 @@ fun SourceListView(sources: List<Source>, isRefreshing: Boolean, onRefresh: () -
 
     SwipeRefresh(
         state = SwipeRefreshState(isRefreshing),
-        onRefresh = { onRefresh }
+        onRefresh = onRefresh
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(sources) { source ->

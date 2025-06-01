@@ -30,12 +30,17 @@ class SourceViewModel(private val sourceUseCase: SourceUseCase) : BaseViewModel(
                 delay(1000)
             }
 
-            val fetchedSources = sourceUseCase.getSources(forceFetch)
+            try {
+                val fetched = sourceUseCase.getSources(forceFetch)
 
-            if (fetchedSources.isNotEmpty()) {
-                _sourceStateFlow.emit(SourceState.Success(sources = fetchedSources))
+                if (fetched.isNotEmpty()) {
+                    _sourceStateFlow.emit(SourceState.Success(fetched))
+                } else {
+                    _sourceStateFlow.emit(SourceState.Empty)
+                }
+            } catch (e: Exception) {
+                _sourceStateFlow.emit(SourceState.Error(e.message ?: "Something went wrong"))
             }
-            else _sourceStateFlow.emit(SourceState.Empty)
 
         }
     }

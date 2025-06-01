@@ -11,12 +11,11 @@ class SourcesRepository(
             return sourceRawsBackEnd()
         }
         val sourcesDb = dataSource.getAllSources()
-        println("Got ${sourcesDb.size} sources from db")
 
-        if (sourcesDb.isEmpty()) {
-            return sourceRawsBackEnd()
+        return if (sourcesDb.isEmpty()) {
+            sourceRawsBackEnd()
         } else {
-            return sourcesDb
+            sourcesDb
         }
     }
 
@@ -24,7 +23,6 @@ class SourcesRepository(
         val fetchedBackEnd =
             service.fetchSources("technology") + service.fetchSources("business")
         dataSource.insertSources(fetchedBackEnd)
-        println("Got ${fetchedBackEnd.size} sources from backend")
 
         return fetchedBackEnd
     }

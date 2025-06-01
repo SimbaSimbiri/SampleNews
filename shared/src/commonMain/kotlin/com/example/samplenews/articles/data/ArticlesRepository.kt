@@ -13,12 +13,11 @@ class ArticlesRepository(
 
         // we first fetch data from the db and check if its not empty
         val articlesDb = dataSource.getAllArticles()
-        println("Got ${articlesDb.size} articles from db")
 
-        if (articlesDb.isEmpty()) {
-            return articleRawsBackEnd()
+        return if (articlesDb.isEmpty()) {
+            articleRawsBackEnd()
         } else {
-            return articlesDb
+            articlesDb
         }
 
     }
@@ -27,7 +26,6 @@ class ArticlesRepository(
         val fetchedBackEnd =
             service.fetchArticles("technology") + service.fetchArticles("business")
         dataSource.insertArticles(fetchedBackEnd)
-        println("Got ${fetchedBackEnd.size} articles from backend")
 
         return fetchedBackEnd
     }
