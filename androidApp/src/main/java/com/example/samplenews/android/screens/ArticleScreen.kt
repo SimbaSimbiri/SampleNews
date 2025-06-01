@@ -118,7 +118,7 @@ fun ArticleItemView(article: Article) {
                 .fillMaxWidth()
                 .padding(12.dp)
                 .clickable {
-                    Log.d("${article.title}", "${article.content}")
+                    TODO("Open article in a bottom sheet or dialog fragment")
                 }
         ) {
             AsyncImage(
