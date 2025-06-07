@@ -14,10 +14,8 @@ class ArticlesRepository(
         // we first fetch data from the db and check if its not empty
         val articlesDb = dataSource.getAllArticles()
 
-        return if (articlesDb.isEmpty()) {
+        return articlesDb.ifEmpty {
             articleRawsBackEnd()
-        } else {
-            articlesDb
         }
 
     }

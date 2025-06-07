@@ -13,7 +13,7 @@ class ArticlesService (private val httpClient: HttpClient) {
 
     suspend fun fetchArticles(category: String): List<ArticleRaw>{
         val response: ArticlesResponse =
-            httpClient.get("${apiEndpoint}&language=$language&category=$category&apiKey=$apiKey").body()
+            httpClient.get("${apiEndpoint}language=$language&category=$category&apiKey=$apiKey").body()
         // we are just interested in the body and not other headers in the request as of now
 
         return if (response.status == "ok")

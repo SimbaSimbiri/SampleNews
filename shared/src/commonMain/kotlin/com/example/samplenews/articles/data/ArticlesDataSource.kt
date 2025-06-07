@@ -21,17 +21,17 @@ class ArticlesDataSource(private val db: SampleNewsDatabase) {
     private fun mapToArticleRaw(
         title: String,
         description: String?,
-        content: String?,
         date: String,
         imageUrl: String?,
-        publisher: String
+        publisher: String, author: String?, urlToPage: String
     ): ArticleRaw = ArticleRaw(
         title = title,
         description = description,
-        content = content,
         date = date,
         imageUrl = imageUrl,
-        source = SourceArt(name = publisher)
+        author = author,
+        source = SourceArt(name = publisher),
+        urlToPage = urlToPage
     )
 
 
@@ -39,10 +39,11 @@ class ArticlesDataSource(private val db: SampleNewsDatabase) {
         db.articleQueries.insertArticle(
             title = article.title,
             description = article.description,
-            content = article.content,
             date = article.date,
             imageUrl = article.imageUrl,
-            publisher = article.source.name
+            publisher = article.source.name,
+            author = article.author,
+            urlToPage = article.urlToPage
         )
     }
 

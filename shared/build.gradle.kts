@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.skie)
     // we are trying to add the 2.0.1 SQLDelight plugin
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.kotlinParcelize)
 
 }
 
@@ -53,11 +54,11 @@ kotlin {
             implementation(libs.sqldelight.coroutines)
 
 
-
         }
 
         androidMain.dependencies {
             implementation(libs.androidx.lifecycle.viewmodel.ktx)
+            implementation(libs.material.icons.extended)
             implementation(libs.ktor.client.android)
             implementation(libs.sqldelight.android)
         }

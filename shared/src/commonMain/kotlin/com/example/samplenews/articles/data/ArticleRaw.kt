@@ -12,15 +12,19 @@ data class ArticleRaw (
     @SerialName("description")
     val description: String?,
 
-    @SerialName("content")
-    val content: String?,
-
     @SerialName("urlToImage")
     val imageUrl: String?,
 
     @SerialName("publishedAt")
     val date: String,
 
+    @SerialName("author")
+    val author: String?,
+
     @SerialName("source")
-    val source: SourceArt
+    val source: SourceArt,
+
+    @SerialName("url")
+    val urlToPage: String
+
 )

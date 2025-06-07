@@ -1,6 +1,5 @@
 package com.example.samplenews.android.screens
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,13 +34,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
 import com.example.samplenews.articles.application.Article
 import com.example.samplenews.articles.presentation.ArticleState
@@ -57,7 +56,8 @@ import org.koin.androidx.compose.getViewModel
 fun ArticlesScreen(
     onAboutButtonClick: () -> Unit,
     articlesViewModel: ArticlesViewModel = getViewModel<ArticlesViewModel>(),
-    onSourcesButtonClick: () -> Unit
+    onSourcesButtonClick: () -> Unit,
+    onArticleClick: (Article) -> Unit
 ) {
     // we want to collect/subscribe to the stream of info from the viewModel as an observable object
     val articleState by articlesViewModel.articleStateFlow.collectAsState()
@@ -68,12 +68,13 @@ fun ArticlesScreen(
             is ArticleState.LoadingInitial -> ShimmerList() // show shimmer UI
             is ArticleState.Success -> ArticlesListView(
                 (articleState as ArticleState.Success).articles,
-                false
+                false, onArticleClick
             ) { articlesViewModel.getArticles(forceFetch = true) }
 
             is ArticleState.Refreshing -> ArticlesListView(
                 (articleState as ArticleState.Refreshing).articles,
-                true
+                true,
+                onArticleClick
             ) { articlesViewModel.getArticles(forceFetch = true) }
 
             is ArticleState.Error -> ErrorMessage((articleState as ArticleState.Error).message)
@@ -88,6 +89,7 @@ fun ArticlesScreen(
 fun ArticlesListView(
     articles: List<Article>,
     isRefreshing: Boolean,
+    onArticleClick: (Article) -> Unit,
     onRefresh: () -> Unit,
 ) {
     SwipeRefresh(
@@ -96,14 +98,14 @@ fun ArticlesListView(
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(articles) { article ->
-                ArticleItemView(article)
+                ArticleItemView(article, onClick = { onArticleClick(article) })
             }
         }
     }
 }
 
 @Composable
-fun ArticleItemView(article: Article) {
+fun ArticleItemView(article: Article, onClick: () -> Unit) {
     val imageHeight = imageHeight()
 
     Card(
@@ -117,9 +119,8 @@ fun ArticleItemView(article: Article) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
-                .clickable {
-                    TODO("Open article in a bottom sheet or dialog fragment")
-                }
+                .clickable { onClick() }
+
         ) {
             AsyncImage(
                 model = article.imageUrl,
@@ -135,14 +136,14 @@ fun ArticleItemView(article: Article) {
 
             Text(
                 text = article.title,
-                style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
             )
 
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
                 text = article.description,
-                style = TextStyle(fontSize = 14.sp)
+                style = TextStyle(fontSize = 14.sp),
             )
 
             Spacer(modifier = Modifier.height(6.dp))
@@ -167,7 +168,7 @@ fun ArticleItemView(article: Article) {
 }
 
 @Composable
-private fun imageHeight(): Dp {
+fun imageHeight(): Dp {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val imageHeight = screenHeight * 0.30f

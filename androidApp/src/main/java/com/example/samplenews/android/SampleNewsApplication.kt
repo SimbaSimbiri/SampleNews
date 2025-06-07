@@ -1,6 +1,7 @@
 package com.example.samplenews.android
 
 import android.app.Application
+import android.webkit.WebView
 import com.example.samplenews.android.di.databaseModule
 import com.example.samplenews.android.di.viewModelsModule
 import com.example.samplenews.di.sharedKoinModules
@@ -14,6 +15,7 @@ class SampleNewsApplication : Application(){
     // this class will be added to the manifest file in the application tag name
     override fun onCreate() {
         super.onCreate()
+        WebView(this)
         initializeKoin()
     }
 
