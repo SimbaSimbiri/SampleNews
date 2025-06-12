@@ -4,10 +4,10 @@ import android.net.Uri
 
 
 enum class Screens(val route: String){
-    ARTICLES("Isaac's articles"),
-    ARTICLE_DETAIL("article_detail/{url}"),
-    ABOUT_DEVICE("about-device"),
-    SOURCES("Isaac's sources");
+    ARTICLES("articles"),
+    ARTICLE_DETAIL("article_detail/{url}"), // curly braces is how we indicate a named navArgument
+    ABOUT_DEVICE("about_device"),
+    SOURCES("sources");
 
     fun createDetailRoute(url: String) = "article_detail/${Uri.encode(url)}"
 }

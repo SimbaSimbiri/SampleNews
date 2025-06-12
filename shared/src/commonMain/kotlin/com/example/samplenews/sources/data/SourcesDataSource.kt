@@ -14,7 +14,7 @@ class SourcesDataSource(private val db: SampleNewsDatabase) {
         }
     }
 
-    fun removeAllSources()  = db.sourceQueries.removeAllSources()
+    fun removeAllSources() = db.sourceQueries.removeAllSources()
 
     private fun insertSource(source: SourceRaw) {
         db.sourceQueries.insertSource(
@@ -31,12 +31,10 @@ class SourcesDataSource(private val db: SampleNewsDatabase) {
         name: String, description: String?, homepage: String, country: String, language: String
     ): SourceRaw = SourceRaw(
         name = name,
-        description = description ?: "Click to read more",
+        description = description ?: "Click to go to source homepage",
         homepage = homepage,
         country = country,
         language = language
     )
-
-
 
 }

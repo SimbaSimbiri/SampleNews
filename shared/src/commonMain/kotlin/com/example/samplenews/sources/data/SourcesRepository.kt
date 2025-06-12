@@ -8,18 +8,16 @@ class SourcesRepository(
     suspend fun getSources(forceFetch: Boolean): List<SourceRaw> {
         if (forceFetch){
             dataSource.removeAllSources()
-            return sourceRawsBackEnd()
+            return sourcesRawFromService()
         }
-        val sourcesDb = dataSource.getAllSources()
+        val sourcesFromDb = dataSource.getAllSources()
 
-        return if (sourcesDb.isEmpty()) {
-            sourceRawsBackEnd()
-        } else {
-            sourcesDb
+        return sourcesFromDb.ifEmpty {
+            sourcesRawFromService()
         }
     }
 
-    private suspend fun sourceRawsBackEnd(): List<SourceRaw> {
+    private suspend fun sourcesRawFromService(): List<SourceRaw> {
         val fetchedBackEnd =
             service.fetchSources("technology") + service.fetchSources("business")
         dataSource.insertSources(fetchedBackEnd)

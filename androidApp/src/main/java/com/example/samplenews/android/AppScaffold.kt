@@ -26,7 +26,7 @@ import com.example.samplenews.articles.application.Article
 @Composable
 fun AppScaffold() {
     val navController = rememberNavController()
-    val paddingValues = PaddingValues(top = 0.dp, start = 0.dp, end = 0.dp, bottom = 16.dp)
+    val paddingValues = PaddingValues(all = 0.dp)
 
     Scaffold {
         AppNavHost(
@@ -41,12 +41,12 @@ fun AppScaffold() {
 @Composable
 fun AppNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
 ) {
     NavHost(
         navController = navController,
         startDestination = Screens.ARTICLES.route,
-        modifier = modifier.padding(0.dp),
+        modifier = modifier,
     ) {
         composable(Screens.ARTICLES.route) { // if the current route is articles, navigate to ArticlesScreen
             ArticlesScreen(

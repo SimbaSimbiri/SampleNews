@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,7 +18,6 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -63,19 +61,21 @@ fun ArticlesScreen(
     val articleState by articlesViewModel.articleStateFlow.collectAsState()
 
     Column {
-        AppBar(onAboutButtonClick, onSourcesButtonClick, "Isaac's Articles")
+        AppBar(onAboutButtonClick, onSourcesButtonClick, "Articles")
         when (articleState) {
             is ArticleState.LoadingInitial -> ShimmerList() // show shimmer UI
             is ArticleState.Success -> ArticlesListView(
                 (articleState as ArticleState.Success).articles,
-                false, onArticleClick
-            ) { articlesViewModel.getArticles(forceFetch = true) }
+                false, onArticleClick,
+                onRefresh = { articlesViewModel.getArticles(forceFetch = true) }
+            )
 
             is ArticleState.Refreshing -> ArticlesListView(
                 (articleState as ArticleState.Refreshing).articles,
                 true,
-                onArticleClick
-            ) { articlesViewModel.getArticles(forceFetch = true) }
+                onArticleClick,
+                onRefresh = { articlesViewModel.getArticles(forceFetch = true) }
+            )
 
             is ArticleState.Error -> ErrorMessage((articleState as ArticleState.Error).message)
             is ArticleState.Empty -> ErrorMessage("No articles found")
@@ -98,14 +98,14 @@ fun ArticlesListView(
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(articles) { article ->
-                ArticleItemView(article, onClick = { onArticleClick(article) })
+                ArticleItemView(article, onItemClick = { onArticleClick(article) })
             }
         }
     }
 }
 
 @Composable
-fun ArticleItemView(article: Article, onClick: () -> Unit) {
+fun ArticleItemView(article: Article, onItemClick: () -> Unit) {
     val imageHeight = imageHeight()
 
     Card(
@@ -119,7 +119,7 @@ fun ArticleItemView(article: Article, onClick: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
-                .clickable { onClick() }
+                .clickable { onItemClick() }
 
         ) {
             AsyncImage(
@@ -186,14 +186,14 @@ fun ShimmerList() {
 
 @Composable
 fun ShimmerItemView() {
-    val cardHeight = 200.dp
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp)
-            .height(cardHeight),
+            .height(250.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+
 
         ) {
         Box(
@@ -218,27 +218,11 @@ fun ErrorMessage(error: String) {
     {
         Text(
             text = error,
-            style = TextStyle(fontSize = 28.sp, textAlign = TextAlign.Center)
+            style = TextStyle(fontSize = 24.sp, textAlign = TextAlign.Center)
         )
     }
 }
 
-@Composable
-fun Loader() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    )
-    {
-        CircularProgressIndicator(
-            modifier = Modifier.width(50.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            trackColor = MaterialTheme.colorScheme.secondary,
-
-            )
-
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -250,14 +234,14 @@ fun AppBar(onAboutButtonClick: () -> Unit, onSourcesButtonClick: () -> Unit, tit
             IconButton(onClick = onSourcesButtonClick) {
                 Icon(
                     imageVector = Icons.Outlined.List,
-                    contentDescription = "Source Page",
+                    contentDescription = "Sources Page",
                 )
             }
 
             IconButton(onClick = onAboutButtonClick) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
-                    contentDescription = "About Device Button",
+                    contentDescription = "About Device Page",
                 )
             }
         }

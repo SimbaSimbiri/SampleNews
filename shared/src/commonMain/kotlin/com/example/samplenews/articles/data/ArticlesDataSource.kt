@@ -8,6 +8,8 @@ class ArticlesDataSource(private val db: SampleNewsDatabase) {
         db.articleQueries.selectAllArticles(::mapToArticleRaw).executeAsList()
 
     fun insertArticles(articles: List<ArticleRaw>) {
+        // inserting articles received from the service has to be a transaction so that if one fails,
+        // all fail
         db.articleQueries.transaction {
             articles.forEach { article ->
                 insertArticle(article)
@@ -23,7 +25,9 @@ class ArticlesDataSource(private val db: SampleNewsDatabase) {
         description: String?,
         date: String,
         imageUrl: String?,
-        publisher: String, author: String?, urlToPage: String
+        publisher: String,
+        author: String?,
+        urlToPage: String
     ): ArticleRaw = ArticleRaw(
         title = title,
         description = description,
@@ -46,8 +50,6 @@ class ArticlesDataSource(private val db: SampleNewsDatabase) {
             urlToPage = article.urlToPage
         )
     }
-
-
 
 
 }

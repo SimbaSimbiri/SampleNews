@@ -1,5 +1,6 @@
 package com.example.samplenews.android.screens
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -79,10 +80,8 @@ fun ArticleDetailScreen(url: String, onBack: () -> Unit) {
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-                        context.startActivity(intent)
-                    }) {
+                    IconButton(onClick = {openNewsInBrowser(url, context)}
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ExitToApp,
                             contentDescription = "Open in browser"
@@ -108,4 +107,9 @@ fun ArticleDetailScreen(url: String, onBack: () -> Unit) {
             }
         }
     }
+}
+
+private fun openNewsInBrowser(url: String, context: Context) {
+    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+    context.startActivity(intent)
 }

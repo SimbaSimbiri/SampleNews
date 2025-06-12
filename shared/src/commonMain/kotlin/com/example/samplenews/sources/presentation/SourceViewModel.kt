@@ -2,14 +2,13 @@ package com.example.samplenews.sources.presentation
 
 import com.example.samplenews.BaseViewModel
 import com.example.samplenews.sources.application.SourceUseCase
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SourceViewModel(private val sourceUseCase: SourceUseCase) : BaseViewModel() {
 
-    private val _sourceStateFlow : MutableStateFlow<SourceState> =
+    private val _sourceStateFlow: MutableStateFlow<SourceState> =
         MutableStateFlow(SourceState.LoadingInitial)
 
     val sourceStateFlow: StateFlow<SourceState> get() = _sourceStateFlow
@@ -22,12 +21,10 @@ class SourceViewModel(private val sourceUseCase: SourceUseCase) : BaseViewModel(
         scope.launch {
             val currentState = _sourceStateFlow.value
 
-            if (currentState is SourceState.Success && forceFetch){
+            if (currentState is SourceState.Success && forceFetch) {
                 _sourceStateFlow.emit(SourceState.Refreshing(currentState.sources))
-                delay(1000)
-            } else if (currentState !is SourceState.Success){
+            } else if (currentState !is SourceState.Success) {
                 _sourceStateFlow.emit(SourceState.LoadingInitial)
-                delay(1000)
             }
 
             try {
@@ -39,7 +36,11 @@ class SourceViewModel(private val sourceUseCase: SourceUseCase) : BaseViewModel(
                     _sourceStateFlow.emit(SourceState.Empty)
                 }
             } catch (e: Exception) {
-                _sourceStateFlow.emit(SourceState.Error(e.message ?: "Something went wrong"))
+                _sourceStateFlow.emit(
+                    SourceState.Error(
+                        e.message ?: "Something went wrong. Try again later"
+                    )
+                )
             }
 
         }

@@ -9,8 +9,8 @@ import org.koin.dsl.module
 
 val sourceModule = module {
     single <SourcesService> { SourcesService(get()) }
+    single <SourcesDataSource>{ SourcesDataSource(get()) }
+    single <SourcesRepository>{ SourcesRepository(get(), get()) }
     single <SourceUseCase> { SourceUseCase(get()) }
     single <SourceViewModel> { SourceViewModel(get()) }
-    single <SourcesDataSource>{ SourcesDataSource(get())}
-    single <SourcesRepository>{ SourcesRepository(get(), get()) }
 }

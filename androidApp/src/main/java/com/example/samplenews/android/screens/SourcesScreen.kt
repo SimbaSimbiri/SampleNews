@@ -1,6 +1,8 @@
 package com.example.samplenews.android.screens
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,16 +38,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.example.samplenews.sources.application.Source
 import com.example.samplenews.sources.presentation.SourceState
 import com.example.samplenews.sources.presentation.SourceViewModel
-import org.koin.androidx.compose.getViewModel
-import androidx.core.net.toUri
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.shimmer
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SourcesScreen(
@@ -55,25 +57,23 @@ fun SourcesScreen(
     val sourceState by sourceViewModel.sourceStateFlow.collectAsState()
 
     Column {
-        Toolbar(onBackButtonClick, "Isaac's Sources")
+        Toolbar(onBackButtonClick, "Sources")
         when (sourceState) {
-            is SourceState.LoadingInitial -> ShimmerSourceList() // shows our source shimmers
+            is SourceState.LoadingInitial -> ShimmerSourceList()
             is SourceState.Success -> {
                 SourceListView(
                     sources = (sourceState as SourceState.Success).sources,
                     false,
-                ) {
-                    sourceViewModel.getSources(forceFetch = true)
-                }
+                    onRefresh = {sourceViewModel.getSources(forceFetch = true)}
+                )
             }
 
             is SourceState.Refreshing -> {
                 SourceListView(
                     sources = (sourceState as SourceState.Refreshing).sources,
-                    true
-                ) {
-                    sourceViewModel.getSources(forceFetch = true)
-                }
+                    true,
+                    onRefresh = {sourceViewModel.getSources(forceFetch = true)}
+                )
             }
 
             is SourceState.Error -> ErrorMessage((sourceState as SourceState.Error).message)
@@ -166,9 +166,7 @@ fun SourceItemView(source: Source) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 HomepageText(source)
-
                 Text(
                     text = source.origin,
                     style = TextStyle(color = Color.Gray, fontSize = 12.sp),
@@ -185,10 +183,7 @@ private fun HomepageText(source: Source) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {
-            val intent = Intent(Intent.ACTION_VIEW, source.homepage.toUri())
-            ContextCompat.startActivity(context, intent, null)
-        }
+        modifier = Modifier.clickable {openSourcePage(source.homepage.toUri(), context)}
     ) {
         Icon(
             imageVector = Icons.Outlined.Home,
@@ -206,4 +201,12 @@ private fun HomepageText(source: Source) {
             )
         )
     }
+}
+
+private fun openSourcePage(
+    uri: Uri,
+    context: Context
+) {
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    ContextCompat.startActivity(context, intent, null)
 }

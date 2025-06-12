@@ -12,11 +12,14 @@ class SourcesService(private val httpClient: HttpClient) {
     private val sourceEndpoint = "https://newsapi.org/v2/top-headlines/sources?"
 
 
-    suspend fun fetchSources(category: String): List<SourceRaw>{
+    suspend fun fetchSources(category: String): List<SourceRaw> {
         val response: SourcesResponse =
-            httpClient.get("${sourceEndpoint}&language=${language}&category=${category}&apiKey=$apiKey").body()
+            httpClient.get("${sourceEndpoint}&language=${language}&category=${category}&apiKey=$apiKey")
+                .body()
 
-        return if (response.status == "ok") response.sourceList
-        else emptyList()
+        return if (response.status == "ok")
+            response.sourceList
+        else
+            emptyList()
     }
 }
