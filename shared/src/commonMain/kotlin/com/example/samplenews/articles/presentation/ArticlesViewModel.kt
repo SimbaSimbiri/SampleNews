@@ -2,6 +2,7 @@ package com.example.samplenews.articles.presentation
 
 import com.example.samplenews.BaseViewModel
 import com.example.samplenews.articles.application.ArticleUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -34,6 +35,9 @@ class ArticlesViewModel(
                 // we initiate a force Refresh state that will enable showing the refresh loader
                 // behind the scenes, we will call a fetch from the backend
                 _articleStateFlow.emit(ArticleState.Refreshing(currentState.articles))
+                delay(600)
+                _articleStateFlow.emit(ArticleState.LoadingInitial)
+                delay(600)
                 // while refreshing i.e retrieving fresh articles, we still want to display the
                 // previously loaded articles so we parse in that list
             } else if (currentState !is ArticleState.Success) {

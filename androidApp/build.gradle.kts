@@ -1,9 +1,8 @@
-import org.jetbrains.kotlin.utils.addToStdlib.assertedCast
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.composeMultiplatformPlugin)
 }
 
 android {

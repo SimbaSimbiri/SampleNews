@@ -2,6 +2,7 @@ package com.example.samplenews.sources.presentation
 
 import com.example.samplenews.BaseViewModel
 import com.example.samplenews.sources.application.SourceUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,6 +24,9 @@ class SourceViewModel(private val sourceUseCase: SourceUseCase) : BaseViewModel(
 
             if (currentState is SourceState.Success && forceFetch) {
                 _sourceStateFlow.emit(SourceState.Refreshing(currentState.sources))
+                delay(600)
+                _sourceStateFlow.emit(SourceState.LoadingInitial)
+                delay(600)
             } else if (currentState !is SourceState.Success) {
                 _sourceStateFlow.emit(SourceState.LoadingInitial)
             }

@@ -17,6 +17,7 @@ ktorClient = "2.3.5"
 kotlinx-serialization = "1.6.0"
 skie = "0.4.19"
 sqldelight = "2.1.0"
+composeMultiplatform = "1.6.10"
 
 
 [libraries]
@@ -33,6 +34,8 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
+## Multiplaform deps
+compose-material = { module = "org.jetbrains.compose.material:material", version.ref = "composeMultiplatform" }
 
 ## Miscellaneous
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
@@ -77,7 +80,8 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-skie = { id = "co.touchlab.skie", version.ref = "skie" }
+### skie = { id = "co.touchlab.skie", version.ref = "skie" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 kotlinParcelize = { id= "kotlin-parcelize" }
+composeMultiplatformPlugin = { id= "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 

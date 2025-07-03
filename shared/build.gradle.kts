@@ -7,10 +7,14 @@ plugins {
     alias(libs.plugins.serialization)
     // we add the skie plugin so as to allow the iosApp to consume the Kotlin StateFlow object being
     // emitted to the UI
-    alias(libs.plugins.skie)
+    //alias(libs.plugins.skie)
     // we are trying to add the 2.0.1 SQLDelight plugin
     alias(libs.plugins.sqldelight)
     alias(libs.plugins.kotlinParcelize)
+    // plugin for compose multiplatform
+    alias(libs.plugins.composeMultiplatformPlugin)
+    // the below must be included for the extra runtime, foundation, and other plugins to work
+    alias(libs.plugins.compose.compiler)
 
 }
 
@@ -52,6 +56,12 @@ kotlin {
             implementation(libs.koin.core)
             // coroutine functionality for sqldelight
             implementation(libs.sqldelight.coroutines)
+            // compose multiplatform deps, remember to apply the compose-compiler plugin at the top
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.components.resources)
+            implementation(compose.material3)
+            implementation(libs.compose.material)
 
 
         }
