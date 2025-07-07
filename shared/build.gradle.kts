@@ -6,7 +6,7 @@ plugins {
     // we have to add this plugin for the serialization of http responses to work
     alias(libs.plugins.serialization)
     // we add the skie plugin so as to allow the iosApp to consume the Kotlin StateFlow object being
-    // emitted to the UI
+    // emitted to the UI. But if we aren't going to use SwiftUI we can disable it
     //alias(libs.plugins.skie)
     // we are trying to add the 2.0.1 SQLDelight plugin
     alias(libs.plugins.sqldelight)
@@ -28,7 +28,7 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),

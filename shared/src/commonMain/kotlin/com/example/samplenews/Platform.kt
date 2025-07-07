@@ -10,7 +10,7 @@ interface Platform { // this is similar to a Protocol for Swift
 // android and iOS apps. It's also much like an interface/abstract class/Protocol
 // but the actual implementation is restricted to only be in the androidMain and iosMain
 
-expect class Platform{
+expect class Platform (){
     val osName: String
     val osVersion: String
     val deviceModel: String

@@ -1,32 +1,20 @@
 import SwiftUI
 import shared // here we are importing the shared module that has common infrastructural logic
 
+// this is where we replace all the swift UI code with compose multiplatform logic
 struct ContentView: View {
-
-    @State private var shouldOpenAbout = false
-
-    var body: some View {
-
-        NavigationStack{
-            ArticlesScreen(viewModel: .init())
-                .toolbar {
-                    ToolbarItem {
-                        Button {
-                            shouldOpenAbout = true
-                        } label: {
-                            Label("About", systemImage: "info.circle").labelStyle(.titleAndIcon)
-                        }
-                        .popover(isPresented: $shouldOpenAbout) {
-                            AboutScreen()
-                        }
-                    }
-                }
-        }
+    var body: some View{
+        ComposeView().ignoresSafeArea(.keyboard)
     }
+
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+struct ComposeView: UIViewControllerRepresentable{
+    func makeUIViewController(context: Context) -> some UIViewController {
+        MainIOSKt.MainViewController()
+    }
+
+    func updateViewController(_ uiViewController: UIViewControllerType, _ context: Context ) {
+
     }
 }
