@@ -1,8 +1,6 @@
-package com.example.samplenews.android.screens
+package com.example.samplenews.ui.screens
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,8 +16,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -31,49 +33,40 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import com.example.samplenews.sources.application.Source
 import com.example.samplenews.sources.presentation.SourceState
 import com.example.samplenews.sources.presentation.SourceViewModel
 import com.example.samplenews.ui.screens.elements.ErrorMessage
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.shimmer
-import com.google.accompanist.placeholder.placeholder
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshState
-import org.koin.androidx.compose.getViewModel
+import com.example.samplenews.ui.screens.elements.shimmerEffect
+import com.example.samplenews.utils.openSourcePage
+import org.koin.compose.koinInject
 
 @Composable
 fun SourcesScreen(
-    sourceViewModel: SourceViewModel = getViewModel<SourceViewModel>(),
-    onBackButtonClick: () -> Unit
+    sourceViewModel: SourceViewModel = koinInject<SourceViewModel>()
 ) {
     val sourceState by sourceViewModel.sourceStateFlow.collectAsState()
 
     Column {
-        Toolbar(onBackButtonClick, "Sources")
+        Toolbar("Sources")
         when (sourceState) {
             is SourceState.LoadingInitial -> ShimmerSourceList()
             is SourceState.Success -> {
                 SourceListView(
                     sources = (sourceState as SourceState.Success).sources,
-                    false,
-                    onRefresh = {sourceViewModel.getSources(forceFetch = true)}
+                    sourceViewModel
                 )
             }
 
             is SourceState.Refreshing -> {
                 SourceListView(
                     sources = (sourceState as SourceState.Refreshing).sources,
-                    true,
-                    onRefresh = {sourceViewModel.getSources(forceFetch = true)}
+                    sourceViewModel
                 )
             }
 
@@ -108,28 +101,35 @@ fun ShimmerSourceItemView() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .placeholder(
-                    visible = true, highlight = PlaceholderHighlight.shimmer(),
-                    color = MaterialTheme.colorScheme.surfaceVariant
-                )
+                .shimmerEffect()
+                .background(MaterialTheme.colorScheme.surfaceVariant)
 
         )
     }
 }
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SourceListView(sources: List<Source>, isRefreshing: Boolean, onRefresh: () -> Unit) {
+fun SourceListView(
+    sources: List<Source>,
+    sourceViewModel: SourceViewModel
+) {
+    val state = rememberPullRefreshState(
+        refreshing = (sourceViewModel.sourceStateFlow.value) is SourceState.Refreshing,
+        onRefresh = {sourceViewModel.getSources(forceFetch = true)}
+        )
 
-    SwipeRefresh(
-        state = SwipeRefreshState(isRefreshing),
-        onRefresh = onRefresh
-    ) {
+    Box(modifier = Modifier.pullRefresh(state = state)){
+
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(sources) { source ->
                 SourceItemView(source = source)
             }
         }
+
+        PullRefreshIndicator(refreshing = (sourceViewModel.sourceStateFlow.value) is SourceState.Refreshing,
+            state = state, modifier = Modifier.align(Alignment.TopCenter))
     }
 
 }
@@ -180,11 +180,10 @@ fun SourceItemView(source: Source) {
 
 @Composable
 private fun HomepageText(source: Source) {
-    val context = LocalContext.current
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {openSourcePage(source.homepage.toUri(), context)}
+        modifier = Modifier.clickable {openSourcePage(source.homepage)}
     ) {
         Icon(
             imageVector = Icons.Outlined.Home,
@@ -204,10 +203,5 @@ private fun HomepageText(source: Source) {
     }
 }
 
-private fun openSourcePage(
-    uri: Uri,
-    context: Context
-) {
-    val intent = Intent(Intent.ACTION_VIEW, uri)
-    ContextCompat.startActivity(context, intent, null)
-}
+
+

@@ -5,6 +5,7 @@ import android.webkit.WebView
 import com.example.samplenews.android.di.databaseModule
 import com.example.samplenews.android.di.viewModelsModule
 import com.example.samplenews.di.sharedKoinModules
+import com.example.samplenews.utils.AndroidContextProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -15,6 +16,7 @@ class SampleNewsApplication : Application(){
     // this class will be added to the manifest file in the application tag name
     override fun onCreate() {
         super.onCreate()
+        AndroidContextProvider.context = applicationContext
         WebView(this)
         initializeKoin()
     }

@@ -1,5 +1,7 @@
-package com.example.samplenews.android.screens
+package com.example.samplenews.ui.screens
+/*
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +29,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -34,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,25 +46,25 @@ import com.example.samplenews.articles.application.Article
 import com.example.samplenews.articles.presentation.ArticleState
 import com.example.samplenews.articles.presentation.ArticlesViewModel
 import com.example.samplenews.ui.screens.elements.ErrorMessage
+import com.example.samplenews.ui.screens.elements.shimmerEffect
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.shimmer
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.compose.getViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun ArticlesScreen(
-    onAboutButtonClick: () -> Unit,
-    articlesViewModel: ArticlesViewModel = getViewModel<ArticlesViewModel>(),
-    onSourcesButtonClick: () -> Unit,
-    onArticleClick: (Article) -> Unit
+    articlesViewModel: ArticlesViewModel = koinInject(),
+    // onArticleClick: (Article) -> Unit
 ) {
     // we want to collect/subscribe to the stream of info from the viewModel as an observable object
     val articleState by articlesViewModel.articleStateFlow.collectAsState()
 
     Column {
-        AppBar(onAboutButtonClick, onSourcesButtonClick, "Articles")
+        AppBar("Articles")
         when (articleState) {
             is ArticleState.LoadingInitial -> ShimmerList() // show shimmer UI
             is ArticleState.Success -> ArticlesListView(
@@ -198,10 +202,8 @@ fun ShimmerItemView() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .placeholder(
-                    visible = true, highlight = PlaceholderHighlight.shimmer(),
-                    color = MaterialTheme.colorScheme.surfaceVariant
-                )
+                .shimmerEffect()
+                .background(MaterialTheme.colorScheme.surfaceVariant)
 
         )
     }
@@ -211,19 +213,19 @@ fun ShimmerItemView() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(onAboutButtonClick: () -> Unit, onSourcesButtonClick: () -> Unit, title: String) {
+fun AppBar(title: String) {
     TopAppBar(
         title = { Text(text = title) },
         actions = {
 
-            IconButton(onClick = onSourcesButtonClick) {
+            IconButton(onClick = {}) {
                 Icon(
                     imageVector = Icons.Outlined.List,
                     contentDescription = "Sources Page",
                 )
             }
 
-            IconButton(onClick = onAboutButtonClick) {
+            IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
                     contentDescription = "About Device Page",
@@ -232,3 +234,4 @@ fun AppBar(onAboutButtonClick: () -> Unit, onSourcesButtonClick: () -> Unit, tit
         }
     )
 }
+*/

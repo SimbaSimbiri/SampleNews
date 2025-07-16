@@ -62,8 +62,8 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.material3)
             implementation(libs.compose.material)
-
-
+            // we also add the koin compose deps for proper deps injection for both platfroms
+            implementation(libs.koin.compose)
         }
 
         androidMain.dependencies {
