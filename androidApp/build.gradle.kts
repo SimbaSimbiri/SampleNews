@@ -48,9 +48,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
-    implementation(libs.accompanist.swipe.refresh)
-    implementation(libs.accompanist.placeholder.material)
-
 
     debugImplementation(libs.compose.ui.tooling)
 

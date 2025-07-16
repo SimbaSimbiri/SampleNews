@@ -19,11 +19,13 @@ plugins {
 }
 
 kotlin {
+
+    jvmToolchain(17)
     androidTarget {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_1_8)
+                    jvmTarget.set(JvmTarget.JVM_17)
                 }
             }
         }
@@ -64,6 +66,9 @@ kotlin {
             implementation(libs.compose.material)
             // we also add the koin compose deps for proper deps injection for both platfroms
             implementation(libs.koin.compose)
+            // add kamel for image loading for all platforms
+            implementation(libs.kamel.image)
+
         }
 
         androidMain.dependencies {
@@ -100,7 +105,7 @@ android {
         minSdk = 24
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }

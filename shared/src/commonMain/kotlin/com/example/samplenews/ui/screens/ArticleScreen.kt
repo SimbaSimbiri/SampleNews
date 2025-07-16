@@ -1,10 +1,10 @@
 package com.example.samplenews.ui.screens
-/*
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,9 +15,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,31 +38,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.example.samplenews.articles.application.Article
 import com.example.samplenews.articles.presentation.ArticleState
 import com.example.samplenews.articles.presentation.ArticlesViewModel
 import com.example.samplenews.ui.screens.elements.ErrorMessage
 import com.example.samplenews.ui.screens.elements.shimmerEffect
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.shimmer
-import com.google.accompanist.placeholder.placeholder
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import org.koin.androidx.compose.getViewModel
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 import org.koin.compose.koinInject
 
 @Composable
 fun ArticlesScreen(
-    articlesViewModel: ArticlesViewModel = koinInject(),
-    // onArticleClick: (Article) -> Unit
+    articlesViewModel: ArticlesViewModel = koinInject<ArticlesViewModel>(),
+    onArticleClick: (Article) -> Unit
 ) {
     // we want to collect/subscribe to the stream of info from the viewModel as an observable object
     val articleState by articlesViewModel.articleStateFlow.collectAsState()
@@ -69,15 +65,13 @@ fun ArticlesScreen(
             is ArticleState.LoadingInitial -> ShimmerList() // show shimmer UI
             is ArticleState.Success -> ArticlesListView(
                 (articleState as ArticleState.Success).articles,
-                false, onArticleClick,
-                onRefresh = { articlesViewModel.getArticles(forceFetch = true) }
+                onArticleClick, articlesViewModel
             )
 
             is ArticleState.Refreshing -> ArticlesListView(
                 (articleState as ArticleState.Refreshing).articles,
-                true,
                 onArticleClick,
-                onRefresh = { articlesViewModel.getArticles(forceFetch = true) }
+                articlesViewModel
             )
 
             is ArticleState.Error -> ErrorMessage((articleState as ArticleState.Error).message)
@@ -88,28 +82,32 @@ fun ArticlesScreen(
 
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ArticlesListView(
     articles: List<Article>,
-    isRefreshing: Boolean,
     onArticleClick: (Article) -> Unit,
-    onRefresh: () -> Unit,
+    articlesViewModel: ArticlesViewModel,
 ) {
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = onRefresh
-    ) {
+    val state  = rememberPullRefreshState(
+        refreshing = (articlesViewModel.articleStateFlow.value is ArticleState.Refreshing),
+        onRefresh = {articlesViewModel.getArticles(forceFetch = true)})
+
+    Box(modifier = Modifier.pullRefresh(state=state)) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(articles) { article ->
                 ArticleItemView(article, onItemClick = { onArticleClick(article) })
             }
         }
+        PullRefreshIndicator(refreshing = (articlesViewModel.articleStateFlow.value is ArticleState.Refreshing),
+            state = state, modifier = Modifier.align(Alignment.TopCenter))
     }
+
+
 }
 
 @Composable
 fun ArticleItemView(article: Article, onItemClick: () -> Unit) {
-    val imageHeight = imageHeight()
 
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -125,15 +123,7 @@ fun ArticleItemView(article: Article, onItemClick: () -> Unit) {
                 .clickable { onItemClick() }
 
         ) {
-            AsyncImage(
-                model = article.imageUrl,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(imageHeight)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
+            ArticleImage(url = article.imageUrl)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -171,11 +161,20 @@ fun ArticleItemView(article: Article, onItemClick: () -> Unit) {
 }
 
 @Composable
-fun imageHeight(): Dp {
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    val imageHeight = screenHeight * 0.30f
-    return imageHeight
+fun ArticleImage(url: String) {
+    BoxWithConstraints {
+        val imageHeight = maxHeight * 0.3f
+
+        KamelImage(
+            resource = asyncPainterResource(url),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(imageHeight)
+                .clip(RoundedCornerShape(8.dp))
+        )
+    }
 }
 
 @Composable
@@ -234,4 +233,3 @@ fun AppBar(title: String) {
         }
     )
 }
-*/

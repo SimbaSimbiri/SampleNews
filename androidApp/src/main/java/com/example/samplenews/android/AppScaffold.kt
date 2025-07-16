@@ -14,12 +14,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.samplenews.android.screens.AboutScreen
 import com.example.samplenews.android.screens.ArticleDetailScreen
-import com.example.samplenews.android.screens.ArticlesScreen
 import com.example.samplenews.android.screens.Screens
-import com.example.samplenews.android.screens.SourcesScreen
-import com.example.samplenews.articles.application.Article
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -49,14 +45,14 @@ fun AppNavHost(
         modifier = modifier,
     ) {
         composable(Screens.ARTICLES.route) { // if the current route is articles, navigate to ArticlesScreen
-            ArticlesScreen(
+            /*ArticlesScreen(
                 onAboutButtonClick = { navController.navigate(Screens.ABOUT_DEVICE.route) },
                 onSourcesButtonClick = { navController.navigate(Screens.SOURCES.route) },
                 onArticleClick = { article: Article ->
                     navController.navigate(Screens.ARTICLE_DETAIL.createDetailRoute(article.urlToPage))
                 }
 
-            )
+            )*/
         }
 
         composable(Screens.ARTICLE_DETAIL.route,
@@ -70,15 +66,15 @@ fun AppNavHost(
         }
 
         composable(Screens.ABOUT_DEVICE.route) { // navigates to the AboutScreen
-            AboutScreen(
+            /*AboutScreen(
                 onBackButtonClick =  { navController.popBackStack() }
-            )
+            )*/
         }
 
         composable(Screens.SOURCES.route) {
-            SourcesScreen(
+           /* SourcesScreen(
                 onBackButtonClick = { navController.popBackStack() }
-            )
+            )*/
         }
     }
 }
