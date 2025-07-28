@@ -18,6 +18,8 @@ composeMultiplatform = "1.6.10"
 koinCompose = "1.0.4"
 composeShimmer = "0.2.1"
 kamel = "0.7.1"
+voyagerVersion = "1.1.0-alpha04"
+
 
 
 [libraries]
@@ -37,11 +39,18 @@ material-icons-extended = { module = "androidx.compose.material:material-icons-e
 compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
 
 ## Multiplaform deps
+# for material theme
 compose-material = { module = "org.jetbrains.compose.material:material", version.ref = "composeMultiplatform" }
+# for navigation
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyagerVersion" }
+voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyagerVersion" }
+
+#for image loading
+kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamel" }
 
 ## Miscellaneous
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamel" }
+
 
 
 

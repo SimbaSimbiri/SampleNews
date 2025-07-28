@@ -14,7 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.samplenews.android.screens.ArticleDetailScreen
 import com.example.samplenews.android.screens.Screens
 
 
@@ -59,10 +58,12 @@ fun AppNavHost(
             arguments = listOf(navArgument("url") { type = NavType.StringType })
         ) { backStackEntry ->
             val url = backStackEntry.arguments!!.getString("url")!!
+            /*
             ArticleDetailScreen(
                 url = url,
                 onBack = { navController.popBackStack() },
             )
+            */
         }
 
         composable(Screens.ABOUT_DEVICE.route) { // navigates to the AboutScreen

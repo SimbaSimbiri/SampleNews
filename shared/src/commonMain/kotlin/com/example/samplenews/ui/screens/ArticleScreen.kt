@@ -42,6 +42,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.samplenews.articles.application.Article
 import com.example.samplenews.articles.presentation.ArticleState
 import com.example.samplenews.articles.presentation.ArticlesViewModel
@@ -51,13 +54,26 @@ import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import org.koin.compose.koinInject
 
+class ArticlesScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+
+        ArticleScreenContent { article ->
+            navigator.push(ArticleDetailScreen(article.urlToPage))
+        }
+    }
+
+}
+
 @Composable
-fun ArticlesScreen(
+fun ArticleScreenContent(
     articlesViewModel: ArticlesViewModel = koinInject<ArticlesViewModel>(),
     onArticleClick: (Article) -> Unit
 ) {
-    // we want to collect/subscribe to the stream of info from the viewModel as an observable object
+
     val articleState by articlesViewModel.articleStateFlow.collectAsState()
+    // we want to collect/subscribe to the stream of info from the viewModel as an observable object
 
     Column {
         AppBar("Articles")
@@ -79,6 +95,7 @@ fun ArticlesScreen(
         }
 
     }
+
 
 }
 
@@ -213,18 +230,22 @@ fun ShimmerItemView() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(title: String) {
+    val navigator = LocalNavigator.currentOrThrow
     TopAppBar(
         title = { Text(text = title) },
         actions = {
-
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                navigator.push(SourcesScreen())
+            }) {
                 Icon(
                     imageVector = Icons.Outlined.List,
                     contentDescription = "Sources Page",
                 )
             }
 
-            IconButton(onClick = { }) {
+            IconButton(onClick = {
+                navigator.push(AboutScreen())
+            }) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
                     contentDescription = "About Device Page",

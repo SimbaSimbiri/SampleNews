@@ -38,16 +38,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.screen.Screen
 import com.example.samplenews.sources.application.Source
 import com.example.samplenews.sources.presentation.SourceState
 import com.example.samplenews.sources.presentation.SourceViewModel
 import com.example.samplenews.ui.screens.elements.ErrorMessage
 import com.example.samplenews.ui.screens.elements.shimmerEffect
-import com.example.samplenews.utils.openSourcePage
+import com.example.samplenews.utils.openWebUrl
 import org.koin.compose.koinInject
 
+
+class SourcesScreen : Screen {
+    @Composable
+    override fun Content() {
+        SourcesScreenContent()
+    }
+}
 @Composable
-fun SourcesScreen(
+fun SourcesScreenContent(
     sourceViewModel: SourceViewModel = koinInject<SourceViewModel>()
 ) {
     val sourceState by sourceViewModel.sourceStateFlow.collectAsState()
@@ -183,7 +191,7 @@ private fun HomepageText(source: Source) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {openSourcePage(source.homepage)}
+        modifier = Modifier.clickable {openWebUrl(source.homepage)}
     ) {
         Icon(
             imageVector = Icons.Outlined.Home,

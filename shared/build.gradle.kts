@@ -68,6 +68,9 @@ kotlin {
             implementation(libs.koin.compose)
             // add kamel for image loading for all platforms
             implementation(libs.kamel.image)
+            // navigation using voyager
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.transitions)
 
         }
 

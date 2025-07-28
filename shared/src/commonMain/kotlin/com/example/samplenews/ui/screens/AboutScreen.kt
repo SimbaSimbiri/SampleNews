@@ -18,12 +18,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.samplenews.Platform
 
 
+class AboutScreen: Screen {
+    @Composable
+    override fun Content() {
+        AboutScreenContent()
+    }
+
+}
 @Composable
-fun AboutScreen(
-    ){
+fun AboutScreenContent(){
 
     Column{ // this is a precalculated list of a few items arranged vertically
         Toolbar("About Device")  // this is a self constructed composable, don't use the default ToolBar widget
@@ -80,10 +89,14 @@ fun makeItems(): List<Pair<String, String>> {
 fun Toolbar(
      title: String
 ){
+    val navigator = LocalNavigator.currentOrThrow
+
     TopAppBar(
         title = { Text(title) },
         navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                navigator.pop()
+            }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back Button"
