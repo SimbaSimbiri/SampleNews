@@ -60,7 +60,6 @@ kotlin {
             implementation(libs.sqldelight.coroutines)
             // compose multiplatform deps, remember to apply the compose-compiler plugin at the top
             implementation(compose.runtime)
-            implementation(compose.foundation)
             implementation(compose.components.resources)
             implementation(compose.material3)
             implementation(libs.compose.material)
