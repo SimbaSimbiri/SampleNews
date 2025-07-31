@@ -2,6 +2,7 @@ package com.example.samplenews.ui.screens
 
 import android.graphics.Color
 import android.webkit.WebSettings
+import androidx.compose.material3.MaterialTheme
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Box
@@ -62,7 +63,10 @@ actual fun WebContent(
         AndroidView(factory = { webView }, modifier = Modifier.matchParentSize())
         if (isLoading) {
             Box(Modifier.matchParentSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(strokeWidth = 3.dp)
+                CircularProgressIndicator(strokeWidth = 3.dp,
+                    color      = MaterialTheme.colorScheme.onPrimary,
+                    trackColor = MaterialTheme.colorScheme.primary
+                )
             }
         }
     }

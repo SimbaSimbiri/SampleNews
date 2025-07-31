@@ -42,6 +42,8 @@ kotlin {
         }
     }
 
+    jvm("desktop")
+
     sourceSets {
         commonMain.dependencies {
             // our coroutines core functionality provided by Kotlinx core library will be used to
@@ -84,6 +86,13 @@ kotlin {
             implementation(libs.ktor.client.darwin)
             implementation(libs.sqldelight.native)
 
+        }
+
+        val desktopMain by getting{
+            dependencies{
+                implementation(libs.ktor.client.cio)
+                implementation(libs.sql.desktop.driver)
+            }
         }
 
         commonTest.dependencies {

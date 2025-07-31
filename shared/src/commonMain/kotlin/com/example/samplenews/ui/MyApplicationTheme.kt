@@ -20,24 +20,50 @@ fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val lightBlue      = Color(0xFFE3F2FD) // Light-blue 50
+    val darkBlue       = Color(0xFF0D47A1) // Indigo-900
+    val darkerBlue     = Color(0xFF001E3C) // Even deeper for dark-surface
+    val white          = Color.White
+    val black          = Color.Black
+    val accentTeal     = Color(0xFF03DAC5)
+
     val colors = if (darkTheme) {
         darkColorScheme(
-            primary = Color(0xFFBB86FC),
-            secondary = Color(0xFF03DAC5),
-            tertiary = Color(0xFF3700B3)
+            primary      = darkerBlue,
+            onPrimary    = white,
+
+            background   = lightBlue,   // app window
+            onBackground = black,       // text on window
+
+            surface      = darkerBlue,    // card bg
+            onSurface    = white,       // text on cards
+
+            secondary    = accentTeal,
+            onSecondary  = black         // if you ever use it
         )
+
     } else {
         lightColorScheme(
-            primary = Color(0xFF6200EE),
-            secondary = Color(0xFF03DAC5),
-            tertiary = Color(0xFF3700B3)
+
+            primary      = lightBlue,
+            onPrimary    = black,
+
+            background   = white,  // app window
+            onBackground = black,       // text on window
+
+            surface      = lightBlue,    // card bg
+            onSurface    = black,       // text on cards
+
+            secondary    = accentTeal,
+            onSecondary  = black
         )
     }
     val typography = Typography(
         bodyMedium = TextStyle(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Normal,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color =  colors.onBackground
         )
     )
     val shapes = Shapes(

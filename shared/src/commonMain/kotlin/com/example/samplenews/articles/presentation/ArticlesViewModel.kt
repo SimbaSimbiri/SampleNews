@@ -31,16 +31,18 @@ class ArticlesViewModel(
         scope.launch {
             val currentState = _articleStateFlow.value
 
-            if (currentState is ArticleState.Success && forceFetch) {
+            if (currentState is ArticleState.Success && forceFetch) { // user wants fresh articles
+
                 // we initiate a force Refresh state that will enable showing the refresh loader
                 // behind the scenes, we will call a fetch from the backend
                 _articleStateFlow.emit(ArticleState.Refreshing(currentState.articles))
-                delay(600)
+                delay(400)
                 _articleStateFlow.emit(ArticleState.LoadingInitial)
-                delay(600)
+                delay(400)
                 // while refreshing i.e retrieving fresh articles, we still want to display the
                 // previously loaded articles so we parse in that list
-            } else if (currentState !is ArticleState.Success) {
+            } else if (currentState !is ArticleState.Success) { // it is the first time the user
+                // has logged in the app so just do the initial fetch and display the shimmer list
                 _articleStateFlow.emit(ArticleState.LoadingInitial)
             }
 

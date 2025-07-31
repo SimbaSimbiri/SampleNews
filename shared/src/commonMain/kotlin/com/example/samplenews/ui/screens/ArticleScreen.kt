@@ -4,10 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -106,18 +106,20 @@ fun ArticlesListView(
     onArticleClick: (Article) -> Unit,
     articlesViewModel: ArticlesViewModel,
 ) {
-    val state  = rememberPullRefreshState(
+    val state = rememberPullRefreshState(
         refreshing = (articlesViewModel.articleStateFlow.value is ArticleState.Refreshing),
-        onRefresh = {articlesViewModel.getArticles(forceFetch = true)})
+        onRefresh = { articlesViewModel.getArticles(forceFetch = true) })
 
-    Box(modifier = Modifier.pullRefresh(state=state)) {
+    Box(modifier = Modifier.pullRefresh(state = state)) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(articles) { article ->
                 ArticleItemView(article, onItemClick = { onArticleClick(article) })
             }
         }
-        PullRefreshIndicator(refreshing = (articlesViewModel.articleStateFlow.value is ArticleState.Refreshing),
-            state = state, modifier = Modifier.align(Alignment.TopCenter))
+        PullRefreshIndicator(
+            refreshing = (articlesViewModel.articleStateFlow.value is ArticleState.Refreshing),
+            state = state, modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
 
 
@@ -131,7 +133,11 @@ fun ArticleItemView(article: Article, onItemClick: () -> Unit) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor   = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Column(
             modifier = Modifier
@@ -179,19 +185,17 @@ fun ArticleItemView(article: Article, onItemClick: () -> Unit) {
 
 @Composable
 fun ArticleImage(url: String) {
-    BoxWithConstraints {
-        val imageHeight = maxHeight * 0.3f
 
-        KamelImage(
-            resource = asyncPainterResource(url),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(imageHeight)
-                .clip(RoundedCornerShape(8.dp))
-        )
-    }
+    KamelImage(
+        resource = asyncPainterResource(url),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(4f / 3f)
+            .clip(RoundedCornerShape(8.dp))
+    )
+
 }
 
 @Composable
@@ -219,12 +223,11 @@ fun ShimmerItemView() {
             modifier = Modifier
                 .fillMaxSize()
                 .shimmerEffect()
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .background(MaterialTheme.colorScheme.surface)
 
         )
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)

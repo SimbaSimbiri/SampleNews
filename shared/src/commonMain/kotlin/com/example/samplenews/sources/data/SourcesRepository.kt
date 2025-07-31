@@ -5,14 +5,14 @@ class SourcesRepository(
     private val service: SourcesService
 ) {
 
-    suspend fun getSources(forceFetch: Boolean): List<SourceRaw> {
+    suspend fun fetchSources(forceFetch: Boolean): List<SourceRaw> {
         if (forceFetch){
             dataSource.removeAllSources()
             return sourcesRawFromService()
         }
-        val sourcesFromDb = dataSource.getAllSources()
+        val sourcesRawFromDb = dataSource.getAllSources()
 
-        return sourcesFromDb.ifEmpty {
+        return sourcesRawFromDb.ifEmpty {
             sourcesRawFromService()
         }
     }

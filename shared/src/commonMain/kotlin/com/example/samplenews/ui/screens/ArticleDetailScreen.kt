@@ -17,7 +17,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.samplenews.utils.openWebUrl
 
-data class ArticleDetailScreen(val url: String) : Screen {
+class ArticleDetailScreen(val url: String) : Screen {
     @Composable
     override fun Content() {
         ArticleDetailScreenContent(url)
@@ -32,7 +32,7 @@ fun ArticleDetailScreenContent(url: String){
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { /* you could show the hostname or “Article” */ },
+                title = {},
                 navigationIcon = {
                     IconButton(onClick = {
                         navigator.pop()

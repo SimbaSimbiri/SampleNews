@@ -12,7 +12,7 @@ import org.koin.core.context.startKoin
 class SampleNewsApplication : Application(){
     // this is where we will connect all the deps that we need for our app
     // we can also use the application class to store sensitive info that's needed when the user
-    // is still in session
+    // is still in session e.g app context,
     // this class will be added to the manifest file in the application tag name
     override fun onCreate() {
         super.onCreate()

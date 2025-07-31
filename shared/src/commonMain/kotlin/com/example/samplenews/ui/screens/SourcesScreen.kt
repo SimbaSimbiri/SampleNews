@@ -110,7 +110,7 @@ fun ShimmerSourceItemView() {
             modifier = Modifier
                 .fillMaxSize()
                 .shimmerEffect()
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .background(MaterialTheme.colorScheme.surface)
 
         )
     }
@@ -149,7 +149,11 @@ fun SourceItemView(source: Source) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor   = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Column(
             modifier = Modifier
@@ -197,13 +201,13 @@ private fun HomepageText(source: Source) {
             imageVector = Icons.Outlined.Home,
             contentDescription = "Open Homepage",
             modifier = Modifier.size(16.dp),
-            tint = MaterialTheme.colorScheme.primary
+            tint = Color.Gray
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = "${source.name} homepage",
             style = TextStyle(
-                color = MaterialTheme.colorScheme.primary,
+                color = Color.Gray,
                 fontSize = 12.sp,
                 textDecoration = TextDecoration.Underline
             )

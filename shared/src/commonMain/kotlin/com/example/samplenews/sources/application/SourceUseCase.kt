@@ -6,9 +6,9 @@ import kotlin.random.Random
 
 class SourceUseCase(private val repository: SourcesRepository) {
     suspend fun getSources(forceFetch: Boolean): List<Source> {
-        val sourceListRaw : List<SourceRaw> = repository.getSources(forceFetch)
+        val sourceListRaw : List<SourceRaw> = repository.fetchSources(forceFetch)
 
-        return mappedSources(sourceListRaw).stableShuffle(32L)
+        return mappedSources(sourceListRaw).stableShuffle(19L)
     }
 
     private fun <T> List<T>.stableShuffle(seed: Long): List<T> = this.shuffled(Random(seed))

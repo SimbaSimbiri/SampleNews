@@ -6,5 +6,5 @@ import com.example.samplenews.ui.screens.SourcesScreen
 
 
 fun MainViewController() =  ComposeUIViewController {
-    SourcesScreen()
+    App()
 }

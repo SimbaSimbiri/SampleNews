@@ -9,11 +9,13 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.random.Random
 
 class ArticleUseCase(private val repository: ArticlesRepository) {
+    // the naming getArticles presumes we already have the articles fetched from the backend and
+    // thus they exist in our repository, and we only need to get them
     suspend fun getArticles(forceFetch: Boolean) : List<Article>{
         val articleListRaw =
             repository.fetchArticles(forceFetch)
 
-        return mappedArticles(articleListRaw).stableShuffle(42L)
+        return mappedArticles(articleListRaw).stableShuffle(19L)
     }
 
     // we create a list extension function that will mix both business and tech articles
@@ -38,6 +40,7 @@ class ArticleUseCase(private val repository: ArticlesRepository) {
         val nowInstant = Clock.System.now()
         val parsedInstant = Instant.parse(date)
         val currTz = TimeZone.currentSystemDefault()
+
         val nowLocalTz = nowInstant.toLocalDateTime(currTz)
         val parsedLocalTz = parsedInstant.toLocalDateTime(currTz)
 

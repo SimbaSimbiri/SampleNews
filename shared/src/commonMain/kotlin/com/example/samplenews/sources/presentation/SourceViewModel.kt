@@ -24,9 +24,9 @@ class SourceViewModel(private val sourceUseCase: SourceUseCase) : BaseViewModel(
 
             if (currentState is SourceState.Success && forceFetch) {
                 _sourceStateFlow.emit(SourceState.Refreshing(currentState.sources))
-                delay(600)
+                delay(400)
                 _sourceStateFlow.emit(SourceState.LoadingInitial)
-                delay(600)
+                delay(400)
             } else if (currentState !is SourceState.Success) {
                 _sourceStateFlow.emit(SourceState.LoadingInitial)
             }
