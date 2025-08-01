@@ -19,3 +19,4 @@ dependencyResolutionManagement {
 rootProject.name = "SampleNews"
 include(":androidApp")
 include(":shared")
+include(":desktop")
