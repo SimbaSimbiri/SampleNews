@@ -9,19 +9,25 @@ androidx-activityCompose = "1.9.0"
 kotlinxCoroutinesCore = "1.7.3"
 kotlinxDatetime = "0.6.2"
 lifecycleViewmodelKtx = "2.9.0"
-navigationCompose = "2.9.0"
 ktorClient = "2.3.5"
 kotlinx-serialization = "1.6.0"
 sqldelight = "2.1.0"
 composeMultiplatform = "1.6.10"
 koinCompose = "1.0.4"
-composeShimmer = "0.2.1"
 kamel = "0.7.1"
 voyagerVersion = "1.1.0-alpha04"
-
+javafx = "17.0.10"
+javafxPlugin  = "0.1.0"
 
 
 [libraries]
+# JavaFX BOM (platform import)
+javafx-bom = { group = "org.openjfx", name = "javafx-bom", version.ref = "javafx" }
+
+# JavaFX modules
+javafx-controls = { group = "org.openjfx", name = "javafx-controls" }
+javafx-web      = {group = "org.openjfx",   name = "javafx-web" }
+javafx-swing    = { group = "org.openjfx",   name = "javafx-swing" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 ### UI dependecies
@@ -31,7 +37,7 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
-compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
+
 
 ## Multiplaform deps
 # for material theme
@@ -76,7 +82,6 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinCompose" }
 
-
 ### Business and UseCase Logic dependecies
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
@@ -88,6 +93,6 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
-kotlinParcelize = { id= "kotlin-parcelize" }
+kotlinParcelize = { id= "kotlin-parcelize"}
 composeMultiplatformPlugin = { id= "org.jetbrains.compose", version.ref = "composeMultiplatform" }
-
+javafxPlugin = { id = "org.openjfx.javafxplugin", version.ref = "javafxPlugin" }

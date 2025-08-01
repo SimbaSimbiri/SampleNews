@@ -18,6 +18,11 @@ plugins {
 
 }
 
+repositories {
+    google()
+    mavenCentral()
+}
+
 kotlin {
 
     jvmToolchain(17)
@@ -72,7 +77,6 @@ kotlin {
             // navigation using voyager
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.transitions)
-
         }
 
         androidMain.dependencies {
@@ -85,11 +89,11 @@ kotlin {
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
             implementation(libs.sqldelight.native)
-
         }
 
-        val desktopMain by getting{
-            dependencies{
+
+        val desktopMain by getting {
+            dependencies {
                 implementation(libs.ktor.client.cio)
                 implementation(libs.sql.desktop.driver)
             }
@@ -98,6 +102,7 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+
     }
 }
 
