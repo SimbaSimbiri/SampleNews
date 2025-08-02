@@ -2,22 +2,22 @@ package com.example.samplenews.articles.data
 
 import com.example.samplenews.db.SampleNewsDatabase
 
-class ArticlesDataSource(private val db: SampleNewsDatabase) {
+class ArticlesDataSource(private val db: SampleNewsDatabase?) {
 
     fun getAllArticles(): List<ArticleRaw> =
-        db.articleQueries.selectAllArticles(::mapToArticleRaw).executeAsList()
+        db?.articleQueries?.selectAllArticles(::mapToArticleRaw)?.executeAsList() ?: listOf()
 
     fun insertArticles(articles: List<ArticleRaw>) {
         // inserting articles received from the service has to be a transaction so that if one fails,
         // all fail
-        db.articleQueries.transaction {
+        db?.articleQueries?.transaction {
             articles.forEach { article ->
                 insertArticle(article)
             }
         }
     }
 
-    fun removeAllArticles() = db.articleQueries.removeAllArticles()
+    fun removeAllArticles() = db?.articleQueries?.removeAllArticles()
 
 
     private fun mapToArticleRaw(
@@ -40,7 +40,7 @@ class ArticlesDataSource(private val db: SampleNewsDatabase) {
 
 
     private fun insertArticle(article: ArticleRaw) {
-        db.articleQueries.insertArticle(
+        db?.articleQueries?.insertArticle(
             title = article.title,
             description = article.description,
             date = article.date,

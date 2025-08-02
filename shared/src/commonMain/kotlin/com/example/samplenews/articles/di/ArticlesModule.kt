@@ -13,7 +13,7 @@ val articlesModule = module {
     // explicitly instantiate it here since it should be universal for other features.
     // We will thus create a new universal di folder with NetworkModule for creating one httpClient instance
     single<ArticlesService>{ ArticlesService(get()) }
-    single<ArticlesDataSource>{ ArticlesDataSource(get()) }
+    single<ArticlesDataSource>{ ArticlesDataSource(getOrNull()) }
     single<ArticlesRepository>{ ArticlesRepository(get(), get()) }
     single<ArticleUseCase>{ ArticleUseCase(get()) }
     single<ArticlesViewModel>{ ArticlesViewModel(get()) }

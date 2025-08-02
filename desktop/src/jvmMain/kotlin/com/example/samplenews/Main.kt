@@ -8,6 +8,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.example.samplenews.di.initKoin
 import com.example.samplenews.ui.App
+import org.koin.compose.getKoin
 
 fun main(){
     initKoin()
@@ -26,7 +27,7 @@ fun main(){
                 // this is the shared App UI that is currently being used by android and IOS
                 // here you can choose to display a different screen which is more appropriate for the
                 // desktop
-                App()
+                App(getKoin())
             }
         }
     }

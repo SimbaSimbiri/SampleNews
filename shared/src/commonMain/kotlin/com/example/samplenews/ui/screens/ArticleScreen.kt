@@ -52,14 +52,14 @@ import com.example.samplenews.ui.screens.elements.ErrorMessage
 import com.example.samplenews.ui.screens.elements.shimmerEffect
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
-import org.koin.compose.koinInject
+import org.koin.core.Koin
 
-class ArticlesScreen : Screen {
+class ArticlesScreen(val koin: Koin) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
 
-        ArticleScreenContent { article ->
+        ArticleScreenContent(koin) { article ->
             navigator.push(ArticleDetailScreen(article.urlToPage))
         }
     }
@@ -68,7 +68,8 @@ class ArticlesScreen : Screen {
 
 @Composable
 fun ArticleScreenContent(
-    articlesViewModel: ArticlesViewModel = koinInject<ArticlesViewModel>(),
+    koin: Koin,
+    articlesViewModel: ArticlesViewModel = koin.get(),
     onArticleClick: (Article) -> Unit
 ) {
 
@@ -76,7 +77,7 @@ fun ArticleScreenContent(
     // we want to collect/subscribe to the stream of info from the viewModel as an observable object
 
     Column {
-        AppBar("Articles")
+        AppBar("Articles", koin)
         when (articleState) {
             is ArticleState.LoadingInitial -> ShimmerList() // show shimmer UI
             is ArticleState.Success -> ArticlesListView(
@@ -232,13 +233,13 @@ fun ShimmerItemView() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(title: String) {
+fun AppBar(title: String, koin: Koin) {
     val navigator = LocalNavigator.currentOrThrow
     TopAppBar(
         title = { Text(text = title) },
         actions = {
             IconButton(onClick = {
-                navigator.push(SourcesScreen())
+                navigator.push(SourcesScreen(koin))
             }) {
                 Icon(
                     imageVector = Icons.Outlined.List,

@@ -18,19 +18,6 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(project(":shared"))
-
-                val javafxVersion = "17.0.10"
-                val os = org.gradle.internal.os.OperatingSystem.current()
-                val platform = when {
-                    os.isMacOsX -> "mac"
-                    os.isWindows -> "win"
-                    os.isLinux -> "linux"
-                    else -> error("Unsupported OS: ${os.name}")
-                }
-
-                implementation("org.openjfx:javafx-controls:$javafxVersion:$platform")
-                implementation("org.openjfx:javafx-web:$javafxVersion:$platform")
-                implementation("org.openjfx:javafx-swing:$javafxVersion:$platform")
             }
         }
 

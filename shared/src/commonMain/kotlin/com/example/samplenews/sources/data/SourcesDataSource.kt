@@ -2,22 +2,22 @@ package com.example.samplenews.sources.data
 
 import com.example.samplenews.db.SampleNewsDatabase
 
-class SourcesDataSource(private val db: SampleNewsDatabase) {
+class SourcesDataSource(private val db: SampleNewsDatabase?) {
     fun getAllSources(): List<SourceRaw> =
-        db.sourceQueries.selectAllSources(::mapToSourceRaw).executeAsList()
+        db?.sourceQueries?.selectAllSources(::mapToSourceRaw)?.executeAsList() ?: listOf()
 
     fun insertSources(sources: List<SourceRaw>) {
-        db.sourceQueries.transaction {
+        db?.sourceQueries?.transaction {
             sources.forEach { source ->
                 insertSource(source)
             }
         }
     }
 
-    fun removeAllSources() = db.sourceQueries.removeAllSources()
+    fun removeAllSources() = db?.sourceQueries?.removeAllSources()
 
     private fun insertSource(source: SourceRaw) {
-        db.sourceQueries.insertSource(
+        db?.sourceQueries?.insertSource(
             name = source.name,
             description = source.description,
             homepage = source.homepage,

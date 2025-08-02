@@ -49,6 +49,11 @@ kotlin {
 
     jvm("desktop")
 
+    js(IR){
+        binaries.executable()
+        browser()
+    }
+
     sourceSets {
         commonMain.dependencies {
             // our coroutines core functionality provided by Kotlinx core library will be used to
@@ -68,6 +73,8 @@ kotlin {
             // compose multiplatform deps, remember to apply the compose-compiler plugin at the top
             implementation(compose.runtime)
             implementation(compose.components.resources)
+            implementation(compose.foundation)
+            implementation(compose.materialIconsExtended)
             implementation(compose.material3)
             implementation(libs.compose.material)
             // we also add the koin compose deps for proper deps injection for both platfroms
@@ -81,7 +88,6 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.androidx.lifecycle.viewmodel.ktx)
-            implementation(libs.material.icons.extended)
             implementation(libs.ktor.client.android)
             implementation(libs.sqldelight.android)
         }
@@ -96,6 +102,13 @@ kotlin {
             dependencies {
                 implementation(libs.ktor.client.cio)
                 implementation(libs.sql.desktop.driver)
+            }
+        }
+
+        val jsMain by getting{
+            dependencies {
+                implementation(libs.ktor.client.js)
+                //implementation(libs.sql.js.driver)
             }
         }
 
@@ -124,4 +137,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
+
+compose.experimental{
+    web.application{}
 }

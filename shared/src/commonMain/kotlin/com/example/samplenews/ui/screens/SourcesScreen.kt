@@ -45,18 +45,19 @@ import com.example.samplenews.sources.presentation.SourceViewModel
 import com.example.samplenews.ui.screens.elements.ErrorMessage
 import com.example.samplenews.ui.screens.elements.shimmerEffect
 import com.example.samplenews.utils.openWebUrl
-import org.koin.compose.koinInject
+import org.koin.core.Koin
 
 
-class SourcesScreen : Screen {
+class SourcesScreen(val koin: Koin) : Screen {
     @Composable
     override fun Content() {
-        SourcesScreenContent()
+        SourcesScreenContent(koin)
     }
 }
 @Composable
 fun SourcesScreenContent(
-    sourceViewModel: SourceViewModel = koinInject<SourceViewModel>()
+    koin: Koin,
+    sourceViewModel: SourceViewModel = koin.get()
 ) {
     val sourceState by sourceViewModel.sourceStateFlow.collectAsState()
 
