@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.example.samplenews.ui.screens.elements.WebContent
 import com.example.samplenews.utils.openWebUrl
 
 class ArticleDetailScreen(val url: String) : Screen {

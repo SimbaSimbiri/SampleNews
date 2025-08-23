@@ -1,12 +1,12 @@
-package com.example.samplenews.ui.screens
+package com.example.samplenews.ui.screens.elements
 
 import android.graphics.Color
 import android.webkit.WebSettings
-import androidx.compose.material3.MaterialTheme
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -33,7 +33,7 @@ actual fun WebContent(
     val webView = remember {
         WebView(context).apply {
             setBackgroundColor(Color.WHITE)
-            settings.javaScriptEnabled = true
+            settings.javaScriptEnabled = false
             settings.domStorageEnabled = true
             settings.cacheMode = WebSettings.LOAD_DEFAULT
         }
@@ -58,7 +58,7 @@ actual fun WebContent(
         webView.loadUrl(url)
     }
 
-    // UI
+    // This UI will recompose once our webview is commit visible and ready to render
     Box(modifier) {
         AndroidView(factory = { webView }, modifier = Modifier.matchParentSize())
         if (isLoading) {

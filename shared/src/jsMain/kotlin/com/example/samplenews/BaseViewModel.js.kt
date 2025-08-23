@@ -4,6 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 actual open class BaseViewModel actual constructor() {
-    actual val scope: kotlinx.coroutines.CoroutineScope
-        get() = CoroutineScope(Dispatchers.Default)
+    actual val scope: CoroutineScope
+        get() = CoroutineScope(Dispatchers.Default) // web clients can't use dispatchers.IO
 }

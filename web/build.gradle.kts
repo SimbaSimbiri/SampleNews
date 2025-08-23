@@ -24,12 +24,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.material)
             implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
             implementation(libs.koin.core)
         }
     }
 
-}
-
-compose.experimental {
-    web.application {}
 }

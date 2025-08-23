@@ -7,8 +7,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -70,7 +71,7 @@ fun RowView(title: String, subtitle: String) {
             style = MaterialTheme.typography.bodyLarge
         )
     }
-    Divider()
+    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
 }
 
 fun makeItems(): List<Pair<String, String>> {

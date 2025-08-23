@@ -1,20 +1,19 @@
 [versions]
 agp = "8.9.2"
-coilCompose = "2.5.0"
-koin = "3.5.3"
+koin = "3.6.0-wasm-alpha2"
 kotlin = "2.0.0"
-compose = "1.6.1"
-compose-material3 = "1.2.1"
+compose = "1.8.3"
+compose-material3 = "1.3.1"
 androidx-activityCompose = "1.9.0"
-kotlinxCoroutinesCore = "1.7.3"
+kotlinxCoroutinesCore = "1.8.0"
 kotlinxDatetime = "0.6.2"
 lifecycleViewmodelKtx = "2.9.0"
 ktorClient = "2.3.5"
 kotlinx-serialization = "1.6.0"
 sqldelight = "2.1.0"
-composeMultiplatform = "1.6.10"
-koinCompose = "1.0.4"
-kamel = "0.7.1"
+composeMultiplatform = "1.8.2"
+koinCompose = "1.1.2"
+kamel = "0.9.4"
 voyagerVersion = "1.1.0-alpha04"
 
 
@@ -25,7 +24,7 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 ## AndroidX
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 ## Compose UI
-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 #material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "composeMultiplatform" }
@@ -40,10 +39,6 @@ voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", vers
 
 #for image loading
 kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamel" }
-
-## Miscellaneous
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-
 
 ### Presentation dependecies
 ## ViewModels

@@ -20,9 +20,8 @@ fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val lightBlue      = Color(0xFFE3F2FD) // Light-blue 50
-    val darkBlue       = Color(0xFF0D47A1) // Indigo-900
-    val darkerBlue     = Color(0xFF001E3C) // Even deeper for dark-surface
+    val lightBlue      = Color(0xFFE3F2FD)
+    val darkerBlue     = Color(0xFF001E3C)
     val white          = Color.White
     val black          = Color.Black
     val accentTeal     = Color(0xFF03DAC5)
@@ -32,10 +31,10 @@ fun MyApplicationTheme(
             primary      = darkerBlue,
             onPrimary    = white,
 
-            background   = lightBlue,   // app window
+            background   = white,       // app window color
             onBackground = black,       // text on window
 
-            surface      = darkerBlue,    // card bg
+            surface      = darkerBlue,  // card bg
             onSurface    = white,       // text on cards
 
             secondary    = accentTeal,

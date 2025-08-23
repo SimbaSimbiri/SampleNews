@@ -1,4 +1,4 @@
-package com.example.samplenews.ui.screens
+package com.example.samplenews.ui.screens.elements
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

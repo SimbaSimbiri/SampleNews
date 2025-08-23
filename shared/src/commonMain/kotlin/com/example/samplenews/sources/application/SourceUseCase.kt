@@ -8,10 +8,10 @@ class SourceUseCase(private val repository: SourcesRepository) {
     suspend fun getSources(forceFetch: Boolean): List<Source> {
         val sourceListRaw : List<SourceRaw> = repository.fetchSources(forceFetch)
 
-        return mappedSources(sourceListRaw).stableShuffle(19L)
+        return mappedSources(sourceListRaw).stableShuffle()
     }
 
-    private fun <T> List<T>.stableShuffle(seed: Long): List<T> = this.shuffled(Random(seed))
+    private fun <T> List<T>.stableShuffle(seed: Long = 19L): List<T> = this.shuffled(Random(seed))
 
 
     private fun mappedSources(sourceListRaw: List<SourceRaw>): List<Source> =

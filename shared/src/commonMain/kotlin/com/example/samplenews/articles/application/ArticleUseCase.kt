@@ -15,18 +15,18 @@ class ArticleUseCase(private val repository: ArticlesRepository) {
         val articleListRaw =
             repository.fetchArticles(forceFetch)
 
-        return mappedArticles(articleListRaw).stableShuffle(19L)
+        return mappedArticles(articleListRaw).stableShuffle()
     }
 
     // we create a list extension function that will mix both business and tech articles
-    private fun <T> List<T>.stableShuffle(seed: Long): List<T> = this.shuffled(random = Random(seed))
+    private fun <T> List<T>.stableShuffle(seed: Long = 19L): List<T> = this.shuffled(random = Random(seed))
 
 
     private fun mappedArticles(articleListRaw: List<ArticleRaw>): List<Article> =
         articleListRaw.map { articleRaw ->
             Article(
                 title = articleRaw.title.split(" - ")[0],
-                description = articleRaw.description ?: "Click to read the official publication",
+                description = articleRaw.description ?: "Tap to read more",
                 date = presentDate(articleRaw.date),
                 imageUrl = articleRaw.imageUrl ?: "https://image.cnbcfm.com/api/v1/image/107326078-1698758530118-gettyimages-1765623456-wall26362_igj6ehhp.jpeg?v=1698758587&w=1920&h=1080",
                 publisher = articleRaw.source.name,

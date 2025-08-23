@@ -17,7 +17,7 @@ class ArticlesViewModel(
         MutableStateFlow(ArticleState.LoadingInitial)
     // our first state is the LoadingInitial state that triggers the shimmer UI
 
-    // our public stream should be immutable so that no external intrusion can change the state
+    // our public stream should be immutable so that no external intrusion through the UI can change the state
     val articleStateFlow: StateFlow<ArticleState> get() = _articleStateFlow
 
     init {
@@ -36,12 +36,13 @@ class ArticlesViewModel(
                 // we initiate a force Refresh state that will enable showing the refresh loader
                 // behind the scenes, we will call a fetch from the backend
                 _articleStateFlow.emit(ArticleState.Refreshing(currentState.articles))
+                // while refreshing i.e retrieving fresh articles, we still want to display the
+                // previously loaded articles so we parse in that list
                 delay(400)
                 _articleStateFlow.emit(ArticleState.LoadingInitial)
                 delay(400)
-                // while refreshing i.e retrieving fresh articles, we still want to display the
-                // previously loaded articles so we parse in that list
-            } else if (currentState !is ArticleState.Success) { // it is the first time the user
+            }
+            else if (currentState !is ArticleState.Success) { // it is the first time the user
                 // has logged in the app so just do the initial fetch and display the shimmer list
                 _articleStateFlow.emit(ArticleState.LoadingInitial)
             }

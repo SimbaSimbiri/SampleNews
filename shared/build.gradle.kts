@@ -18,11 +18,6 @@ plugins {
 
 }
 
-repositories {
-    google()
-    mavenCentral()
-}
-
 kotlin {
 
     jvmToolchain(17)
@@ -72,7 +67,7 @@ kotlin {
             implementation(libs.sqldelight.coroutines)
             // compose multiplatform deps, remember to apply the compose-compiler plugin at the top
             implementation(compose.runtime)
-            implementation(compose.components.resources)
+            //implementation(compose.components.resources)
             implementation(compose.foundation)
             implementation(compose.materialIconsExtended)
             implementation(compose.material3)
@@ -137,8 +132,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-}
-
-compose.experimental{
-    web.application{}
 }

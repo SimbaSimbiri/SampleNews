@@ -1,4 +1,4 @@
-package com.example.samplenews.ui.screens
+package com.example.samplenews.ui.screens.elements
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
